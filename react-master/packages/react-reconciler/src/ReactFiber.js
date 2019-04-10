@@ -263,7 +263,7 @@ function FiberNode(
   this.lastEffect = null;
 
   this.expirationTime = NoWork; // 任务的过期时间
-  this.childExpirationTime = NoWork;  // 子节点更新的过期时间
+  this.childExpirationTime = NoWork;  // 子树更新的过期时间
 
   this.alternate = null;  // Fiber 用来复制复用 Fiber 的
 
@@ -358,6 +358,17 @@ export function resolveLazyComponentTag(Component: Function): WorkTag {
 }
 
 // This is used to create an alternate fiber to do work on.
+/**
+ * 
+ * @param {*} current fiber 对象，再 ReactDOM.render 阶段，是 root.current
+ * 
+ * 创造 nextUnitOfWork 对象，之后的 work 操作都在此对象上进行，同时 current.altername = workInProgress
+ * 所以 nextUnitOfWork 变化，current.altername 也会变化
+ * 
+ *  互相引用，互为 alternate  
+    workInProgress.alternate = current;
+    current.alternate = workInProgress;
+ */
 export function createWorkInProgress(
   current: Fiber,
   pendingProps: any,
@@ -388,6 +399,7 @@ export function createWorkInProgress(
       workInProgress._debugHookTypes = current._debugHookTypes;
     }
 
+    // 互相引用，互为 alternate  
     workInProgress.alternate = current;
     current.alternate = workInProgress;
   } else {

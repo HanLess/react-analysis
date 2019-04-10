@@ -1219,7 +1219,9 @@ function workLoop(isYieldy) {
     }
   }
 }
-
+/**   
+ * 渲染阶段
+ */
 function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   invariant(
     !isWorking,
@@ -1237,12 +1239,20 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
 
   // Check if we're starting from a fresh stack, or if we're resuming from
   // previously yielded work.
+  /**
+   * 判断的情况：是否有新的更新进来了
+   * 
+   * ReactDOM.render 和 setState 都会走 if 逻辑
+   * 
+   * nextUnitOfWork 代表当前是否有任务在执行
+   */
   if (
     expirationTime !== nextRenderExpirationTime ||
     root !== nextRoot ||
     nextUnitOfWork === null
   ) {
     // Reset the stack and start working from the root.
+    // 有新的更新进来，先重置变量
     resetStack();
     nextRoot = root;
     nextRenderExpirationTime = expirationTime;
@@ -1747,7 +1757,9 @@ function resolveRetryThenable(boundaryFiber: Fiber, thenable: Thenable) {
 
   （3）向上遍历到 root 节点并更新路径上每个节点的 childExpirationTime 
 
-    最终返回 root 节点的 FiberRoot 对象
+    最终返回 全新 expirationTime 的 root 节点的 FiberRoot 对象
+
+    analysising fiber.alternate 的赋值
  */
 function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   recordScheduleUpdate();
@@ -1760,7 +1772,10 @@ function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   }
 
   // Update the source fiber's expiration time
-  // 更新当前节点的 expiration time
+  /*
+   更新当前节点的 expiration time
+   如果当前优先级低于 更新，则更新过期事件
+   */
   if (fiber.expirationTime < expirationTime) {
     fiber.expirationTime = expirationTime;
   }
@@ -1769,6 +1784,12 @@ function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
     alternate.expirationTime = expirationTime;
   }
   // Walk the parent path to the root and update the child expiration time.
+  /**
+   * 初始化：在执行 ReactDOM.render 方法时，fiber 就是 FiberRoot.current ，即根dom元素的 fiber，它的 return 是 null
+   * 
+   * setState：fiber 是发生变化的 react 节点，所以 return 不为 null
+   * 
+   */
   let node = fiber.return;
   let root = null;
   if (node === null && fiber.tag === HostRoot) {
@@ -1887,7 +1908,7 @@ function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
    * 而且一旦他被赋值，只有当下次任务是 NoWork 的时候他才会被再次设置为 NoWork，当然最开始也是 NoWork
    * 
    * 判断：（1）目前没有任何任务在执行
-   *      （2）之前有执行过任务，同时当前的任务比之前执行的任务过期时间要早（也就是优先级要高）
+   *      （2）之前有执行过任务，同时当前的任务比之前执行的任务优先级要高
    * 
    * 场景：上一个任务是异步任务（优先级很低，超时时间是 502ms），并且在上一个时间片（初始是 33ms）任务没有执行完，
    *      而且等待下一次 requestIdleCallback 的时候新的任务进来了，并且超时时间很短（52ms 或者 22ms 甚至是 Sync），
@@ -1918,7 +1939,6 @@ function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
      * 
      * 从 root 开始更新节点
      * 
-     * analysising
      */
     requestWork(root, rootExpirationTime);
   }
@@ -2137,7 +2157,10 @@ function requestCurrentTime() {
 // requestWork is called by the scheduler whenever a root receives an update.
 // It's up to the renderer to call renderRoot at some point in the future.
 function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
+  // 把 root 加入到执行队列中，即更新 root 的 expirationTime
   addRootToSchedule(root, expirationTime);
+
+  // 在 commitRoot 阶段，isRendering 为 true
   if (isRendering) {
     // Prevent reentrancy. Remaining work will be scheduled at the end of
     // the currently rendering batch.
@@ -2164,6 +2187,19 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
   }
 }
 
+/**
+ * 
+ * 把 root 加入调度队列，即 root.expirationTime = expirationTime;
+ * 在这个方法中初始化 root 属性：
+ * 
+ * root.nextScheduledRoot
+ * root.expirationTime
+ * 
+ * 初始化全局变量：
+ * 
+ * lastScheduledRoot
+ * firstScheduledRoot
+ */
 function addRootToSchedule(root: FiberRoot, expirationTime: ExpirationTime) {
   // Add the root to the schedule.
   // Check if this root is already part of the schedule.
@@ -2284,6 +2320,12 @@ function performSyncWork() {
 function performWork(minExpirationTime: ExpirationTime, isYieldy: boolean) {
   // Keep working on roots until there's no more work, or until there's a higher
   // priority event.
+  /** 
+   *  设置以下变量：
+   * 
+   *  nextFlushedRoot 
+      nextFlushedExpirationTime 
+   */
   findHighestPriorityRoot();
 
   if (isYieldy) {

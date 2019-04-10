@@ -142,7 +142,16 @@ function pushTopLevelContextObject(
       'This error is likely caused by a bug in React. Please file an issue.',
   );
 
+  /**
+   * workInProgress, root.context, false
+   * 
+   * valueStack[index] = contextStackCursor.current = context
+   */
   push(contextStackCursor, context, fiber);
+  /**
+   * 
+   * valueStack[index] = didPerformWorkStackCursor.current = didChange
+   */
   push(didPerformWorkStackCursor, didChange, fiber);
 }
 

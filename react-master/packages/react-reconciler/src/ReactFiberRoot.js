@@ -140,7 +140,7 @@ export function createFiberRoot(
       nextExpirationTimeToWorkOn: NoWork, // 标记此次更新要执行的是哪个优先级的任务
       expirationTime: NoWork, // 用在调度中
       firstBatch: null,
-      nextScheduledRoot: null,  // 链表属性
+      nextScheduledRoot: null,  // 链表属性，在 ReactDOM.render 过程中，在 addRootToSchedule 方法中第一次赋值
 
       interactionThreadID: unstable_getThreadID(),
       memoizedInteractions: new Set(),
