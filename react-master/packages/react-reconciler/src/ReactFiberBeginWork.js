@@ -853,9 +853,12 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
       'bailed out. This error is likely caused by a bug in React. Please ' +
       'file an issue.',
   );
-  const nextProps = workInProgress.pendingProps;
-  const prevState = workInProgress.memoizedState;
+  const nextProps = workInProgress.pendingProps;  // null
+  const prevState = workInProgress.memoizedState;  // null
   const prevChildren = prevState !== null ? prevState.element : null;
+  /**
+   * 在初始化时，更新了 updateQueue.baseUpdate 与 updateQueue.firstUpdate
+   */
   processUpdateQueue(
     workInProgress,
     updateQueue,
@@ -863,10 +866,13 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
     null,
     renderExpirationTime,
   );
+  // 刚刚经过 processUpdateQueue 的计算，nextState 是更新后的 workInProgress.memoizedState（baseState）
   const nextState = workInProgress.memoizedState;
   // Caution: React DevTools currently depends on this property
   // being called "element".
+  // nextChildren 是 react 的虚拟 dom
   const nextChildren = nextState.element;
+  // analysising ，queue 和 workInProgress 已经更新
   if (nextChildren === prevChildren) {
     // If the state is the same as before, that's a bailout because we had
     // no work that expires at this time.

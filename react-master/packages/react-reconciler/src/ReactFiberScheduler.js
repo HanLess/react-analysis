@@ -1759,7 +1759,6 @@ function resolveRetryThenable(boundaryFiber: Fiber, thenable: Thenable) {
 
     最终返回 全新 expirationTime 的 root 节点的 FiberRoot 对象
 
-    analysising fiber.alternate 的赋值
  */
 function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   recordScheduleUpdate();

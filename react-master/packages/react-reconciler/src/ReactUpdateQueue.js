@@ -382,6 +382,9 @@ function getStateFromUpdate<State>(
         (workInProgress.effectTag & ~ShouldCapture) | DidCapture;
     }
     // Intentional fallthrough
+    /**
+     * 这个 case 的逻辑：把 prevState（baseState） 与 update 的内容合并，最后 return prevState
+     */
     case UpdateState: {
       const payload = update.payload;
       let partialState;
@@ -420,6 +423,11 @@ function getStateFromUpdate<State>(
   return prevState;
 }
 
+/**
+ * 
+ * 在 ReactDOM.render 初始化过程中，把 queue 中的 firstUpdate 清空，合并到 baseUpdate 中
+ * 同时清空 lastUpdate（初始化赋值时，firstUpdate 与 lastUpdate 相等）
+ */
 export function processUpdateQueue<State>(
   workInProgress: Fiber,
   queue: UpdateQueue<State>,
@@ -429,6 +437,9 @@ export function processUpdateQueue<State>(
 ): void {
   hasForceUpdate = false;
 
+  /**
+   * 这里要保证操作的是 workInProgress ，而不是 current
+   */
   queue = ensureWorkInProgressQueueIsAClone(workInProgress, queue);
 
   if (__DEV__) {
@@ -443,6 +454,9 @@ export function processUpdateQueue<State>(
   // Iterate through the list of updates to compute the result.
   let update = queue.firstUpdate;
   let resultState = newBaseState;
+  /**
+   * 在这个 while 循环里清空 update，将 update 中的内容合并到 resultState（baseState） 中
+   */
   while (update !== null) {
     const updateExpirationTime = update.expirationTime;
     if (updateExpirationTime < renderExpirationTime) {
@@ -491,6 +505,7 @@ export function processUpdateQueue<State>(
   // Separately, iterate though the list of captured updates.
   let newFirstCapturedUpdate = null;
   update = queue.firstCapturedUpdate;
+  
   while (update !== null) {
     const updateExpirationTime = update.expirationTime;
     if (updateExpirationTime < renderExpirationTime) {

@@ -46,9 +46,15 @@ function getRootHostContainer(): Container {
 function pushHostContainer(fiber: Fiber, nextRootInstance: Container) {
   // Push current root instance onto the stack;
   // This allows us to reset root when portals are popped.
+  /**
+   * valueStack[index] = rootInstanceStackCursor.current = nextRootInstance
+   */
   push(rootInstanceStackCursor, nextRootInstance, fiber);
   // Track the context and the Fiber that provided it.
   // This enables us to pop only Fibers that provide unique contexts.
+  /**
+   * valueStack[index] = contextFiberStackCursor.current = fiber
+   */
   push(contextFiberStackCursor, fiber, fiber);
 
   // Finally, we need to push the host context to the stack.
@@ -56,10 +62,16 @@ function pushHostContainer(fiber: Fiber, nextRootInstance: Container) {
   // we'd have a different number of entries on the stack depending on
   // whether getRootHostContext() throws somewhere in renderer code or not.
   // So we push an empty value first. This lets us safely unwind on errors.
+  /**
+   * valueStack[index] = contextStackCursor.current = NO_CONTEXT
+   */
   push(contextStackCursor, NO_CONTEXT, fiber);
   const nextRootContext = getRootHostContext(nextRootInstance);
   // Now that we know this function doesn't throw, replace it.
   pop(contextStackCursor, fiber);
+  /**
+   * valueStack[index] = contextStackCursor.current = nextRootContext
+   */
   push(contextStackCursor, nextRootContext, fiber);
 }
 
