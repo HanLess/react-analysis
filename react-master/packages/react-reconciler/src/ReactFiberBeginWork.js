@@ -181,6 +181,9 @@ export function reconcileChildren(
 
     // If we had any progressed work already, that is invalid at this point so
     // let's throw it out.
+    /**
+     * reconcileChildFibers 返回一个根据 nextChildren（App 的 react element，即虚拟 dom） 生成的 fiber 对象
+     */
     workInProgress.child = reconcileChildFibers(
       workInProgress,
       current.child,
@@ -844,7 +847,17 @@ function pushHostRootContext(workInProgress) {
   pushHostContainer(workInProgress, root.containerInfo);
 }
 
+/**
+ * 更新了 workInProgress 的属性（在ReactDOM.render 阶段，workInProgress 就是 current.alter ，即 root 的 fiber 对象）
+ * 
+ * 最后返回 workInProgress.child ，一个 fiber 对象（App 的 react element，即虚拟 dom 的 fiber 对象）
+ * 
+ * 在这个阶段可以发现，root 的 fiber 对象，child 属性对应 App 的 fiber 对象
+ */
 function updateHostRoot(current, workInProgress, renderExpirationTime) {
+  /**
+   * 将各种参数入栈，栈：valueStack
+   */
   pushHostRootContext(workInProgress);
   const updateQueue = workInProgress.updateQueue;
   invariant(
@@ -870,7 +883,8 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
   const nextState = workInProgress.memoizedState;
   // Caution: React DevTools currently depends on this property
   // being called "element".
-  // nextChildren 是 react 的虚拟 dom
+
+  // nextChildren 是 react 的虚拟 dom，例如：初始化时是 App 组件的 reactElement
   const nextChildren = nextState.element;
   // analysising ，queue 和 workInProgress 已经更新
   if (nextChildren === prevChildren) {
@@ -883,6 +897,7 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
       renderExpirationTime,
     );
   }
+
   const root: FiberRoot = workInProgress.stateNode;
   if (
     (current === null || current.child === null) &&
@@ -912,6 +927,7 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
   } else {
     // Otherwise reset hydration state in case we aborted and resumed another
     // root.
+    // 给 workInProgress.child 赋值
     reconcileChildren(
       current,
       workInProgress,
