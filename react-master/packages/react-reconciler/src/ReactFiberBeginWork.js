@@ -886,7 +886,6 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
 
   // nextChildren 是 react 的虚拟 dom，例如：初始化时是 App 组件的 reactElement
   const nextChildren = nextState.element;
-  // analysising ，queue 和 workInProgress 已经更新
   if (nextChildren === prevChildren) {
     // If the state is the same as before, that's a bailout because we had
     // no work that expires at this time.
