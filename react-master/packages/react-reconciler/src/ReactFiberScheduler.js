@@ -668,7 +668,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   }
 
   prepareForCommit(root.containerInfo);
-
+// analysising
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
   nextEffect = firstEffect;
   startCommitSnapshotEffectsTimer();
@@ -2084,7 +2084,7 @@ function onFatal(root) {
 
 /**
    * root ： FiberRoot
-   * rootWorkInProgress ：root.current.alternate，保持初始化状态，并没有随着 nextUnitOfWork 而改变
+   * finishedWork ：root.current.alternate，保持初始化状态，并没有随着 nextUnitOfWork 而改变
    * expirationTime ：root.nextExpirationTimeToWorkOn，即最初的、根节点的 expirationTime
    */
 function onComplete(
