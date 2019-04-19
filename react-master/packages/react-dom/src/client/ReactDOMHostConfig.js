@@ -373,6 +373,9 @@ export function appendChild(
   parentInstance.appendChild(child);
 }
 
+/**
+ *  这个方法把 react 最外层的 dom 添加到 body 下
+ */
 export function appendChildToContainer(
   container: DOMContainer,
   child: Instance | TextInstance,

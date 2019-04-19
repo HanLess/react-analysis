@@ -432,6 +432,7 @@ function commitAllHostEffects() {
         nextEffect.effectTag &= ~Placement;
         break;
       }
+      // 在 ReactDOM.render 阶段执行这个 case
       case PlacementAndUpdate: {
         // Placement
         commitPlacement(nextEffect);
@@ -469,6 +470,7 @@ function commitBeforeMutationLifecycles() {
     }
 
     const effectTag = nextEffect.effectTag;
+    // 在 ReactDOM.render 阶段没有命中
     if (effectTag & Snapshot) {
       recordEffect();
       const current = nextEffect.alternate;
@@ -657,6 +659,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     // resulting list is the set that would belong to the root's parent, if
     // it had one; that is, all the effects in the tree including the root.
     if (finishedWork.lastEffect !== null) {
+      // 走这里
       finishedWork.lastEffect.nextEffect = finishedWork;
       firstEffect = finishedWork.firstEffect;
     } else {
@@ -668,10 +671,12 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   }
 
   prepareForCommit(root.containerInfo);
-// analysising
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
+  // analysising effect 是什么
   nextEffect = firstEffect;
   startCommitSnapshotEffectsTimer();
+
+  // while 循环把 nextEffect 置为 null
   while (nextEffect !== null) {
     let didError = false;
     let error;
@@ -702,6 +707,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     }
   }
+
   stopCommitSnapshotEffectsTimer();
 
   if (enableProfilerTimer) {
@@ -2491,6 +2497,7 @@ function performWorkOnRoot(
         cancelTimeout(timeoutHandle);
       }
       renderRoot(root, isYieldy);
+      // 这时 root.finishedWork 就是 root.current
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.
