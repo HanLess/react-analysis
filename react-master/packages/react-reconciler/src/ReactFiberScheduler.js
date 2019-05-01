@@ -1206,6 +1206,9 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
   return next;
 }
 
+/**
+ * nextUnitOfWork 是 workInProgress
+ */
 function workLoop(isYieldy) {
   if (!isYieldy) {
     // Flush work without yielding

@@ -256,8 +256,8 @@ function FiberNode(
   this.mode = mode; // 标记时创建，继承父节点 mod
 
   // Effects
-  this.effectTag = NoEffect;
-  this.nextEffect = null;
+  this.effectTag = NoEffect; // 副作用编码，副作用说明详情见文档中 Effect Hook 部分
+  this.nextEffect = null; // 
 
   this.firstEffect = null;
   this.lastEffect = null;
