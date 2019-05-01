@@ -1148,6 +1148,9 @@ function ChildReconciler(shouldTrackSideEffects) {
       child = child.sibling;
     }
 
+    /**
+     *  element（App 组件）的 $$typeof 是 REACT_ELEMENT_TYPE , type 是 function App(){}
+     */
     if (element.type === REACT_FRAGMENT_TYPE) {
       const created = createFiberFromFragment(
         element.props.children,
@@ -1158,6 +1161,7 @@ function ChildReconciler(shouldTrackSideEffects) {
       created.return = returnFiber;
       return created;
     } else {
+      // 这里根据 element （react 虚拟 dom）创建一个 fiber 对象并返回
       const created = createFiberFromElement(
         element,
         returnFiber.mode,
@@ -1245,6 +1249,12 @@ function ChildReconciler(shouldTrackSideEffects) {
     if (isObject) {
       switch (newChild.$$typeof) {
         case REACT_ELEMENT_TYPE:
+
+          /**
+           * reconcileSingleElement 方法根据 element（react 虚拟 dom）创建一个 fiber 对象
+           * 即 placeSingleChild(fiber)，placeSingleChild 作用是给这个 fiber 对象加了一个属性：effectTag
+           * 最后返回这个 fiber 对象
+           */
           return placeSingleChild(
             reconcileSingleElement(
               returnFiber,

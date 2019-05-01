@@ -432,6 +432,7 @@ function commitAllHostEffects() {
         nextEffect.effectTag &= ~Placement;
         break;
       }
+      // 在 ReactDOM.render 阶段执行这个 case
       case PlacementAndUpdate: {
         // Placement
         commitPlacement(nextEffect);
@@ -469,6 +470,7 @@ function commitBeforeMutationLifecycles() {
     }
 
     const effectTag = nextEffect.effectTag;
+    // 在 ReactDOM.render 阶段没有命中
     if (effectTag & Snapshot) {
       recordEffect();
       const current = nextEffect.alternate;
@@ -657,6 +659,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     // resulting list is the set that would belong to the root's parent, if
     // it had one; that is, all the effects in the tree including the root.
     if (finishedWork.lastEffect !== null) {
+      // 走这里
       finishedWork.lastEffect.nextEffect = finishedWork;
       firstEffect = finishedWork.firstEffect;
     } else {
@@ -668,10 +671,12 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
   }
 
   prepareForCommit(root.containerInfo);
-
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
+  // analysising effect 是什么
   nextEffect = firstEffect;
   startCommitSnapshotEffectsTimer();
+
+  // while 循环把 nextEffect 置为 null
   while (nextEffect !== null) {
     let didError = false;
     let error;
@@ -702,6 +707,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     }
   }
+
   stopCommitSnapshotEffectsTimer();
 
   if (enableProfilerTimer) {
@@ -1170,6 +1176,9 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
       startProfilerTimer(workInProgress);
     }
 
+    /**
+     * next = workInProgress.child
+     */
     next = beginWork(current, workInProgress, nextRenderExpirationTime);
     workInProgress.memoizedProps = workInProgress.pendingProps;
 
@@ -1208,11 +1217,16 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
 
 /**
  * nextUnitOfWork 是 workInProgress
+ * 遍历 fiber 节点树，最终把 nextUnitOfWork 置为 null
  */
 function workLoop(isYieldy) {
   if (!isYieldy) {
     // Flush work without yielding
     while (nextUnitOfWork !== null) {
+      /**
+       * 这里执行深度优先遍历，从 #root 向下循环，直到每一个元素都被遍历到
+       * 
+       */
       nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
     }
   } else {
@@ -1223,7 +1237,7 @@ function workLoop(isYieldy) {
   }
 }
 /**   
- * 渲染阶段
+ * 
  */
 function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   invariant(
@@ -1259,6 +1273,9 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
     resetStack();
     nextRoot = root;
     nextRenderExpirationTime = expirationTime;
+    /**
+     * nextUnitOfWork 初始化 #root 的 fiber 对象的 alternate 属性，即：nextUnitOfWork = root.current.alternate
+     */
     nextUnitOfWork = createWorkInProgress(
       nextRoot.current,
       null,
@@ -1319,11 +1336,12 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   }
 
   let didFatal = false;
-
+  // 计时开始
   startWorkLoopTimer(nextUnitOfWork);
 
   do {
     try {
+      // 遍历 fiber 节点树
       workLoop(isYieldy);
     } catch (thrownValue) {
       resetContextDependences();
@@ -1440,6 +1458,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
 
   // We completed the whole tree.
   const didCompleteRoot = true;
+  // 计时结束
   stopWorkLoopTimer(interruptedBy, didCompleteRoot);
   const rootWorkInProgress = root.current.alternate;
   invariant(
@@ -1534,6 +1553,11 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
   }
 
   // Ready to commit.
+  /**
+   * root ： FiberRoot
+   * rootWorkInProgress ：root.current.alternate，保持初始化状态，并没有随着 nextUnitOfWork 而改变
+   * expirationTime ：root.nextExpirationTimeToWorkOn，即最初的、根节点的 expirationTime
+   */
   onComplete(root, rootWorkInProgress, expirationTime);
 }
 
@@ -1879,7 +1903,11 @@ export function warnIfNotCurrentlyBatchingInDev(fiber: Fiber): void {
     }
   }
 }
-
+/**
+ * 
+ * @param {*} fiber root.current
+ * @param {*} expirationTime 
+ */
 function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
   /**
    * 第一步：从当前节点向上遍历，更新路径上的节点的 childExpirationTime 
@@ -2061,6 +2089,11 @@ function onFatal(root) {
   root.finishedWork = null;
 }
 
+/**
+   * root ： FiberRoot
+   * finishedWork ：root.current.alternate，保持初始化状态，并没有随着 nextUnitOfWork 而改变
+   * expirationTime ：root.nextExpirationTimeToWorkOn，即最初的、根节点的 expirationTime
+   */
 function onComplete(
   root: FiberRoot,
   finishedWork: Fiber,
@@ -2465,6 +2498,7 @@ function performWorkOnRoot(
         cancelTimeout(timeoutHandle);
       }
       renderRoot(root, isYieldy);
+      // 这时 root.finishedWork 就是 root.current
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.

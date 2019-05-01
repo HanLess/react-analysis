@@ -924,6 +924,7 @@ function commitPlacement(finishedWork: Fiber): void {
   }
 
   // Recursively insert all host nodes into the parent.
+  // fiberRoot.current
   const parentFiber = getHostParentFiber(finishedWork);
 
   // Note: these two variables *must* always be updated together.
@@ -1158,6 +1159,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
       commitHookEffectList(UnmountMutation, MountMutation, finishedWork);
       return;
     }
+    // ReactDOM.render 阶段走这个 case
     case ClassComponent: {
       return;
     }

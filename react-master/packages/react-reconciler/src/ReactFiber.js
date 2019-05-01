@@ -362,8 +362,8 @@ export function resolveLazyComponentTag(Component: Function): WorkTag {
  * 
  * @param {*} current fiber 对象，再 ReactDOM.render 阶段，是 root.current
  * 
- * 创造 nextUnitOfWork 对象，之后的 work 操作都在此对象上进行，同时 current.altername = workInProgress
- * 所以 nextUnitOfWork 变化，current.altername 也会变化
+ * 赋值 nextUnitOfWork 对象，之后的 work 操作都在此对象上进行，
+ * 但之后对 nextUnitOfWork 的操作都是重复赋值，没有更改属性，所以 root.current.alternate 不会改变
  * 
  *  互相引用，互为 alternate  
     workInProgress.alternate = current;
@@ -375,6 +375,7 @@ export function createWorkInProgress(
   expirationTime: ExpirationTime,
 ): Fiber {
   let workInProgress = current.alternate;
+  // 为 null ，走 if 逻辑
   if (workInProgress === null) {
     // We use a double buffering pooling technique because we know that we'll
     // only ever need at most two versions of a tree. We pool the "other" unused
@@ -399,7 +400,7 @@ export function createWorkInProgress(
       workInProgress._debugHookTypes = current._debugHookTypes;
     }
 
-    // 互相引用，互为 alternate  
+    // 互相引用，互为 alternate 
     workInProgress.alternate = current;
     current.alternate = workInProgress;
   } else {
