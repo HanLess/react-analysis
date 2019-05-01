@@ -47,3 +47,12 @@ Dan Abramov 为副作用列表提供了一个类比。
 
 所以上面的图表可以表示为这样的线性列表：
 ```
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/1677442376f5ec51.jpg" />
+
+```
+如您所见，React 按照从子到父的顺序应用副作用。
+```
+
+ps : 这里 a1 节点也参与了 effect ，是因为所有的更新都从 root 节点开始，但实际 firstEffect 是 d2
+
