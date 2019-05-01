@@ -1,3 +1,5 @@
+来源：<a href="https://juejin.im/post/5c052f95e51d4523d51c8300#heading-4">「译」React Fiber 那些事: 深入解析新的协调算法</a>
+
 ### 关于 react 中副作用的定义可以参考官网 effect hook 部分
 
 ### 副作用链表
