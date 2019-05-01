@@ -37,3 +37,13 @@ Dan Abramov 为副作用列表提供了一个类比。
 
 而 b2 被用于触发生命周期方法。副作用列表会将它们链接在一起，以便 React 稍后可以跳过其他节点
 ```
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/1677442376f89dbb.jpg" />
+
+```
+可以看到具有副作用的节点是如何链接在一起的。
+
+当遍历节点时，React 使用 firstEffect 指针来确定列表的开始位置。
+
+所以上面的图表可以表示为这样的线性列表：
+```
