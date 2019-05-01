@@ -257,15 +257,22 @@ function FiberNode(
 
   // Effects
   this.effectTag = NoEffect; // 副作用编码，副作用说明详情见文档中 Effect Hook 部分
-  this.nextEffect = null; // 
 
-  this.firstEffect = null;
-  this.lastEffect = null;
+  /**
+   * 此链表的目标是标记具有 DOM 更新或其他相关 副作用 的节点
+   * 
+   * 此表结构的目的是能够快速遍历，遍历线性列表比树快得多，没有必要在没有副作用的节点上花费时间
+   * 这种方式提高了 react 更新的效率
+   */
+  this.nextEffect = null; // 副作用 单向链表结构
+
+  this.firstEffect = null; // 副作用头节点
+  this.lastEffect = null; // 副作用尾节点
 
   this.expirationTime = NoWork; // 任务的过期时间
   this.childExpirationTime = NoWork;  // 子树更新的过期时间
 
-  this.alternate = null;  // Fiber 用来复制复用 Fiber 的
+  this.alternate = null;  // Fiber 对象存的某种意义上的副本
 
   if (enableProfilerTimer) {
     // Note: The following is done to avoid a v8 performance cliff.
