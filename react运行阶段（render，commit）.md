@@ -2,7 +2,11 @@ React 在两个主要阶段执行工作：render 和 commit。
 
 ## render
 
+#### 作用
+
 React 通过 setUpdate 或 React.render 计划性的更新组件，并确定需要在 UI 中更新的内容。
+
+#### 工作内容
 
 如果是初始渲染，React 会为 render 方法返回的每个元素创建一个新的 Fiber 节点
 
@@ -43,6 +47,18 @@ React 可以根据可用时间片来处理一个或多个 Fiber 节点，然后�
     <li>render</li>
 </ul>
 
+#### 阶段
+
+```
+协调算法始终使用 renderRoot 函数从最顶层的 HostRoot 节点开始。
+
+不过，React 会略过已经处理过的 Fiber 节点，直到找到未完成工作的节点。
+
+例如，如果在组件树中的深层组件中调用 setState 方法，则 React 将从顶部开始，
+
+但会快速跳过各个父项，直到它到达调用了 setState 方法的组件。
+
+```
 
 
 
