@@ -31,3 +31,35 @@ React 可以根据可用时间片来处理一个或多个 Fiber 节点，然后�
 这是因为在此阶段执行的工作会导致用户可见的变化，例如 DOM 更新。这就是为什么 React 需要在一次单一过程中完成这些更新。
 
 ```
+
+#### 相关生命周期
+
+<ul>
+  <li>[UNSAFE_]componentWillMount（弃用）</li>
+  <li>[UNSAFE_]componentWillReceiveProps（弃用）</li>
+    <li>getDerivedStateFromProps</li>
+    <li>shouldComponentUpdate</li>
+    <li>[UNSAFE_]componentWillUpdate（弃用）</li>
+    <li>render</li>
+</ul>
+
+
+
+
+
+## commit 
+
+
+
+
+
+
+
+#### 相关生命周期
+<ul>
+  <li>getSnapshotBeforeUpdate</li>
+    <li>componentDidMount</li>
+  <li>componentDidUpdate</li>
+    <li>componentWillUnmount</li>
+</ul>
+
