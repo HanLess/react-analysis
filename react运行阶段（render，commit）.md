@@ -1,6 +1,6 @@
 React 在两个主要阶段执行工作：render 和 commit。
 
-#### render
+## render
 
 React 通过 setUpdate 或 React.render 计划性的更新组件，并确定需要在 UI 中更新的内容。
 
