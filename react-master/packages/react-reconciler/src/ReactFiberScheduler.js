@@ -396,6 +396,9 @@ function resetStack() {
   nextUnitOfWork = null;
 }
 
+/**
+ * 是 React 执行 DOM 更新的函数。该函数基本上定义了节点需要完成的操作类型
+ */
 function commitAllHostEffects() {
   while (nextEffect !== null) {
     if (__DEV__) {
