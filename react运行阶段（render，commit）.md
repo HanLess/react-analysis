@@ -60,14 +60,66 @@ React 可以根据可用时间片来处理一个或多个 Fiber 节点，然后�
 
 ```
 
+#### 主要工作步骤
 
+workLoop
 
+```
+nextUnitOfWork 持有 workInProgress 树中的 Fiber 节点的引用
+
+处理过当前 Fiber 后，变量将持有树中下一个 Fiber 节点的引用或 null。
+
+在这种情况下，React 退出工作循环并准备好提交更改。
+```
+
+遍历树、初始化或完成工作主要用到 4 个函数：
+
+<ul>
+  <li>performUnitOfWork</li>
+    <li>beginWork</li>
+    <li>completeUnitOfWork</li>
+    <li>completeWork</li>
+</ul>
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/1677442376e53cda.gif" />
+
+ps : 垂直方向的连线表示同层关系，而折线连接表示父子关系，例如，b1 没有子节点，而 b2 有一个子节点 c1。
+
+工作过程：
+
+```
+如果有下一个子节点，它将被赋值给 workLoop 函数中的变量 nextUnitOfWork。
+
+但是，如果没有子节点，React 知道它到达了分支的末尾，因此它可以完成当前节点。
+
+一旦节点完成，它将需要为同层的其他节点执行工作，并在完成后回溯到父节点。
+```
 
 ## commit 
 
+```
+在这个阶段，React 更新 DOM 并调用变更生命周期之前及之后方法的地方。
 
+它有 2 棵树和副作用列表：
 
+第一个树表示当前在屏幕上渲染的状态，称为 finishedWork 或 workInProgress，表示需要映射到屏幕上的状态
 
+第二棵树 -> 备用树会用类似的方法通过 child 和 sibling 指针链接到 current 树。
+
+有一个副作用列表 -- 它是 finishedWork 树的节点子集，通过 nextEffect 指针进行链接；它是 render 阶段的结果，作用是 
+确定需要插入、更新或删除的节点，以及哪些组件需要调用其生命周期方法
+```
+
+#### 主要函数 commitRoot 
+
+<ul>
+  <li>在标记为 Snapshot 副作用的节点上调用 getSnapshotBeforeUpdate 生命周期</li>
+    <li>在标记为 Deletion 副作用的节点上调用 componentWillUnmount 生命周期</li>
+    <li>执行所有 DOM 插入、更新、删除操作</li>
+    <li>将 finishedWork 树设置为 current</li>
+    <li>在标记为 Placement 副作用的节点上调用 componentDidMount 生命周期</li>
+  <li>在标记为 Update 副作用的节点上调用 componentDidUpdate 生命周期</li>
+</ul>
 
 
 
