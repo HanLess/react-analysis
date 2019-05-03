@@ -60,8 +60,28 @@ React 可以根据可用时间片来处理一个或多个 Fiber 节点，然后�
 
 ```
 
+#### 主要工作步骤
 
+workLoop
 
+```
+nextUnitOfWork 持有 workInProgress 树中的 Fiber 节点的引用
+
+处理过当前 Fiber 后，变量将持有树中下一个 Fiber 节点的引用或 null。
+
+在这种情况下，React 退出工作循环并准备好提交更改。
+```
+
+遍历树、初始化或完成工作主要用到 4 个函数：
+
+<ul>
+  <li>performUnitOfWork</li>
+    <li>beginWork</li>
+    <li>completeUnitOfWork</li>
+    <li>completeWork</li>
+</ul>
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/1677442376e53cda.gif" />
 
 ## commit 
 
