@@ -425,6 +425,7 @@ function commitAllHostEffects() {
     // effect tag and switch on that value.
     let primaryEffectTag = effectTag & (Placement | Update | Deletion);
     switch (primaryEffectTag) {
+      // 在 ReactDOM.render 阶段执行这个 case
       case Placement: {
         commitPlacement(nextEffect);
         // Clear the "placement" from effect tag so that we know that this is inserted, before
@@ -435,7 +436,6 @@ function commitAllHostEffects() {
         nextEffect.effectTag &= ~Placement;
         break;
       }
-      // 在 ReactDOM.render 阶段执行这个 case
       case PlacementAndUpdate: {
         // Placement
         commitPlacement(nextEffect);
@@ -675,7 +675,6 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
 
   prepareForCommit(root.containerInfo);
   // Invoke instances of getSnapshotBeforeUpdate before mutation.
-  // analysising effect 是什么
   nextEffect = firstEffect;
   startCommitSnapshotEffectsTimer();
 

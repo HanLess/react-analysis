@@ -917,7 +917,6 @@ function getHostSibling(fiber: Fiber): ?Instance {
     }
   }
 }
-
 function commitPlacement(finishedWork: Fiber): void {
   if (!supportsMutation) {
     return;
@@ -925,6 +924,7 @@ function commitPlacement(finishedWork: Fiber): void {
 
   // Recursively insert all host nodes into the parent.
   // fiberRoot.current
+  // 找到根节点 fiberRoot.current
   const parentFiber = getHostParentFiber(finishedWork);
 
   // Note: these two variables *must* always be updated together.
@@ -937,6 +937,7 @@ function commitPlacement(finishedWork: Fiber): void {
       isContainer = false;
       break;
     case HostRoot:
+    // render 走这个 case
       parent = parentFiber.stateNode.containerInfo;
       isContainer = true;
       break;
