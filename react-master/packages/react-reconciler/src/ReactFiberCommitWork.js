@@ -917,6 +917,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
     }
   }
 }
+// analysising
 function commitPlacement(finishedWork: Fiber): void {
   if (!supportsMutation) {
     return;
