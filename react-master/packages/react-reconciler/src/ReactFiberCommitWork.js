@@ -880,6 +880,7 @@ function getHostSibling(fiber: Fiber): ?Instance {
   let node: Fiber = fiber;
   siblings: while (true) {
     // If we didn't find anything, let's try the next sibling.
+    // 找兄弟节点，如果没有，向上找父节点的兄弟节点（叔叔节点）
     while (node.sibling === null) {
       if (node.return === null || isHostParent(node.return)) {
         // If we pop out of the root or hit the parent the fiber we are the
@@ -888,8 +889,10 @@ function getHostSibling(fiber: Fiber): ?Instance {
       }
       node = node.return;
     }
+    // 找到了兄弟节点
     node.sibling.return = node.return;
     node = node.sibling;
+    // 
     while (
       node.tag !== HostComponent &&
       node.tag !== HostText &&
@@ -917,7 +920,6 @@ function getHostSibling(fiber: Fiber): ?Instance {
     }
   }
 }
-// analysising
 function commitPlacement(finishedWork: Fiber): void {
   if (!supportsMutation) {
     return;
@@ -960,6 +962,7 @@ function commitPlacement(finishedWork: Fiber): void {
     parentFiber.effectTag &= ~ContentReset;
   }
 
+  // render 阶段 before 为 null , 因为 finishedWork 是根节点
   const before = getHostSibling(finishedWork);
   // We only have the top Fiber that was inserted but we need to recurse down its
   // children to find all the terminal nodes.
@@ -974,6 +977,7 @@ function commitPlacement(finishedWork: Fiber): void {
         }
       } else {
         if (isContainer) {
+          // render 走了这里，结束
           appendChildToContainer(parent, node.stateNode);
         } else {
           appendChild(parent, node.stateNode);
@@ -984,6 +988,7 @@ function commitPlacement(finishedWork: Fiber): void {
       // down its children. Instead, we'll get insertions from each child in
       // the portal directly.
     } else if (node.child !== null) {
+      // 向下遍历，深度优先
       node.child.return = node;
       node = node.child;
       continue;
