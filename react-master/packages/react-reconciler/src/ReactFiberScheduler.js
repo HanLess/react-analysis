@@ -435,7 +435,6 @@ function commitAllHostEffects() {
         nextEffect.effectTag &= ~Placement;
         break;
       }
-      // 在 ReactDOM.render 阶段执行这个 case
       case PlacementAndUpdate: {
         // Placement
         commitPlacement(nextEffect);

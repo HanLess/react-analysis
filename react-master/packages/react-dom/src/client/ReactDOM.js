@@ -386,6 +386,7 @@ ReactRoot.prototype.render = function(
   /**
    * updateContainer 是 ReactDOM.render 的主要逻辑
    */
+  // analysising fiber 树的创建
   updateContainer(children, root, null, work._onCommit);
   return work;
 };
