@@ -118,7 +118,7 @@ export function createFiberRoot(
   if (enableSchedulerTracing) {
     root = ({
       current: uninitializedFiber, // Fiber 对象通过 new Fiber 创建，与 ReactElement 对应也是树状结构，这里树的顶点
-      containerInfo: containerInfo, // 通过 render 方法传入的 root 节点, 应用挂载的节点
+      containerInfo: containerInfo, // 通过 render 方法传入的 root 节点, 应用挂载的节点，dom 对象
       pendingChildren: null,  // ssr 用来复用节点的
       // 任务调度的时间标记优先级
       earliestPendingTime: NoWork,

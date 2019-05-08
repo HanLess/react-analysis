@@ -122,7 +122,9 @@ function getContextForSubtree(
  * React 是计算出一个节点的更新时间
  */
 
-
+// current 是 FiberRoot.current ，是一个 tag = 3 的空的 FiberNode
+// element 是 reactElement
+// analysising 
 function scheduleRootUpdate(
   current: Fiber,
   element: ReactNodeList,
@@ -209,7 +211,8 @@ export function updateContainerAtExpirationTime(
   } else {
     container.pendingContext = context;
   }
-
+  // current 是 FiberRoot.current ，是一个 tag = 3 的空的 FiberNode
+  // element 是 reactElement
   return scheduleRootUpdate(current, element, expirationTime, callback);
 }
 
@@ -314,6 +317,8 @@ export function createContainer(
  * （3）以 25 为单位增加，即 25ms 以内所有的操作算一个优先级，统一处理
  * 
 */
+
+// container 是 FiberRoot
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
