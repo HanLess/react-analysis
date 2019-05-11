@@ -368,6 +368,7 @@ function ReactRoot(
   hydrate: boolean,
 ) {
   // root 是 FiberRoot
+  // root.current.stateNode = root
   const root = createContainer(container, isConcurrent, hydrate);
   this._internalRoot = root;
 }
@@ -387,7 +388,7 @@ ReactRoot.prototype.render = function(
   /**
    * updateContainer 是 ReactDOM.render 的主要逻辑
    */
-  // analysising fiber 树的创建，root 是 FiberRoot
+  // fiber 树的创建，root 是 FiberRoot
   updateContainer(children, root, null, work._onCommit);
   return work;
 };

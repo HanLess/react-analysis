@@ -1217,8 +1217,9 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
 }
 
 /**
- * nextUnitOfWork 是 workInProgress
+ * nextUnitOfWork 是 workInProgress（root.current.alternate）
  * 遍历 fiber 节点树，最终把 nextUnitOfWork 置为 null
+ * analysising
  */
 function workLoop(isYieldy) {
   if (!isYieldy) {
@@ -1787,6 +1788,7 @@ function resolveRetryThenable(boundaryFiber: Fiber, thenable: Thenable) {
 
     最终返回 全新 expirationTime 的 root 节点的 FiberRoot 对象
 
+    fiber : root.current
  */
 function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
   recordScheduleUpdate();
@@ -1970,6 +1972,7 @@ function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
      * 
      * 从 root 开始更新节点
      * 
+     * root : FiberRoot
      */
     requestWork(root, rootExpirationTime);
   }
@@ -2359,7 +2362,7 @@ function performWork(minExpirationTime: ExpirationTime, isYieldy: boolean) {
   /** 
    *  设置以下变量：
    * 
-   *  nextFlushedRoot 
+   *  nextFlushedRoot 设置为 FiberRoot
       nextFlushedExpirationTime 
    */
   findHighestPriorityRoot();
@@ -2498,6 +2501,7 @@ function performWorkOnRoot(
         // $FlowFixMe Complains noTimeout is not a TimeoutID, despite the check above
         cancelTimeout(timeoutHandle);
       }
+      // root 为 FiberRoot
       renderRoot(root, isYieldy);
       // 这时 root.finishedWork 就是 root.current
       finishedWork = root.finishedWork;

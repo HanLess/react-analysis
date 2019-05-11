@@ -124,7 +124,6 @@ function getContextForSubtree(
 
 // current 是 FiberRoot.current ，是一个 tag = 3 的空的 FiberNode
 // element 是 reactElement
-// analysising 
 function scheduleRootUpdate(
   current: Fiber,
   element: ReactNodeList,
@@ -175,7 +174,7 @@ function scheduleRootUpdate(
    * （2）vue是通过观察者模式，每次更新数据都会执行更新；
    *     react 需要手动 setData，当短时间内多次 setData，每次都执行更新显然不合适，所以使用了 updateQueue 来收集 update 的内容，在合适的时机统一更新
    */
-  // enqueueUpdate 是收集更新的过程
+  // enqueueUpdate 是收集更新的过程，将 updateQueue 绑定到 current 上
   enqueueUpdate(current, update);
   // scheduleWork 是执行更新的过程，此时 current.updateQueue 已经初始化，update 已经存在里面
   scheduleWork(current, expirationTime);
