@@ -15,3 +15,7 @@ ExpirationTime 代表了渲染任务的优先级，react会根据优先级来执
 react 运行过程分三步：schedule --> render --> commit 
 
 ReactDom.render 过程中 schedule 是一个初始化的作用，初始化整个树的 expirationTime
+
+#### ReactDOM.render 执行过程
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/ReactDom.render%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BB%8EscheduleRootUpdate%E5%BC%80%E5%A7%8B%EF%BC%89.png" />
