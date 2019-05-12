@@ -870,7 +870,8 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
   const prevState = workInProgress.memoizedState;  // null
   const prevChildren = prevState !== null ? prevState.element : null;
   /**
-   * 在初始化时，更新了 updateQueue.baseUpdate 与 updateQueue.firstUpdate
+   * 在初始化时，更新了 updateQueue.baseUpdate 与 updateQueue.firstUpdate 
+   * updateQueue.firstEffect 和 updateQueue.lastEffect
    */
   processUpdateQueue(
     workInProgress,
@@ -2145,6 +2146,7 @@ function beginWork(
         renderExpirationTime,
       );
     }
+    // root.current
     case HostRoot:
       return updateHostRoot(current, workInProgress, renderExpirationTime);
     case HostComponent:

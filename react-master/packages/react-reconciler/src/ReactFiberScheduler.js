@@ -1178,6 +1178,8 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
     }
 
     /**
+     * current : root.current
+     * 
      * next = workInProgress.child
      */
     next = beginWork(current, workInProgress, nextRenderExpirationTime);
@@ -1217,9 +1219,8 @@ function performUnitOfWork(workInProgress: Fiber): Fiber | null {
 }
 
 /**
- * nextUnitOfWork 是 workInProgress（root.current.alternate）
- * 遍历 fiber 节点树，最终把 nextUnitOfWork 置为 null
- * analysising
+ * nextUnitOfWork 是 workInProgress（root.current.alternate 的副本）
+ * 最终生成 fiber 树，存在 root.current.alternate 中，并把 nextUnitOfWork 置为 null
  */
 function workLoop(isYieldy) {
   if (!isYieldy) {
@@ -1343,7 +1344,7 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
 
   do {
     try {
-      // 遍历 fiber 节点树
+      // 生成 fiber 节点树，最终存在 root.current.alternate 中
       workLoop(isYieldy);
     } catch (thrownValue) {
       resetContextDependences();
@@ -1559,6 +1560,8 @@ function renderRoot(root: FiberRoot, isYieldy: boolean): void {
    * root ： FiberRoot
    * rootWorkInProgress ：root.current.alternate，保持初始化状态，并没有随着 nextUnitOfWork 而改变
    * expirationTime ：root.nextExpirationTimeToWorkOn，即最初的、根节点的 expirationTime
+   * 
+   * 设置 root.finishWork
    */
   onComplete(root, rootWorkInProgress, expirationTime);
 }
