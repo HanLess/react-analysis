@@ -2506,7 +2506,7 @@ function performWorkOnRoot(
       }
       // root 为 FiberRoot
       renderRoot(root, isYieldy);
-      // 这时 root.finishedWork 就是 root.current
+      // 这时 root.finishedWork 就是 root.current，一个完整的 fiber 树
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.
@@ -2548,7 +2548,7 @@ function performWorkOnRoot(
 
   isRendering = false;
 }
-
+// analysising
 function completeRoot(
   root: FiberRoot,
   finishedWork: Fiber,
