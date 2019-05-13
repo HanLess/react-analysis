@@ -663,6 +663,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
     if (finishedWork.lastEffect !== null) {
       // 走这里
       finishedWork.lastEffect.nextEffect = finishedWork;
+      // firstEffect 被赋值为更新的 fiber 树，在 render 阶段，就是从 App 开始的完整的 fiber 树
       firstEffect = finishedWork.firstEffect;
     } else {
       firstEffect = finishedWork;
@@ -2548,7 +2549,7 @@ function performWorkOnRoot(
 
   isRendering = false;
 }
-// analysising
+
 function completeRoot(
   root: FiberRoot,
   finishedWork: Fiber,
@@ -2585,6 +2586,7 @@ function completeRoot(
     lastCommittedRootDuringThisBatch = root;
     nestedUpdateCount = 0;
   }
+  // root.current.alternate 和 finishedWork 都存了完整的 fiber 树
   commitRoot(root, finishedWork);
 }
 

@@ -427,6 +427,8 @@ function getStateFromUpdate<State>(
  * 
  * 在 ReactDOM.render 初始化过程中，把 queue 中的 firstUpdate 清空，合并到 baseUpdate 中
  * 同时清空 lastUpdate（初始化赋值时，firstUpdate 与 lastUpdate 相等）
+ * 
+ * 设置 updateQueue.firstEffect 和 updateQueue.lastEffect
  */
 export function processUpdateQueue<State>(
   workInProgress: Fiber,
