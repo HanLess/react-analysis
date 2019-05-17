@@ -89,7 +89,7 @@ if (__DEV__) {
     if (callback === null || typeof callback === 'function') {
       return;
     }
-    const key = `${callerName}_${(callback: any)}`;
+    const key = `${callerName}_${(callback)}`;
     if (!didWarnOnInvalidCallback.has(key)) {
       didWarnOnInvalidCallback.add(key);
       warningWithoutStack(
@@ -198,6 +198,9 @@ const classComponentUpdater = {
     enqueueUpdate(fiber, update);
     scheduleWork(fiber, expirationTime);
   },
+  /**
+   * setState 方法走这里
+   */
   enqueueReplaceState(inst, payload, callback) {
     const fiber = getInstance(inst);
     const currentTime = requestCurrentTime();
@@ -214,6 +217,7 @@ const classComponentUpdater = {
       update.callback = callback;
     }
 
+    // 这三个方法与 render 中的起点 scheduleRootUpdate 一样
     flushPassiveEffects();
     enqueueUpdate(fiber, update);
     scheduleWork(fiber, expirationTime);
@@ -492,8 +496,9 @@ function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: any) {
     }
   }
 }
-
+// 在这里给 fiber.stateNode 赋值（dom 或 组件实例）
 function adoptClassInstance(workInProgress: Fiber, instance: any): void {
+  // 设置 updater ，用于创建组件实例
   instance.updater = classComponentUpdater;
   workInProgress.stateNode = instance;
   // The instance needs access to the fiber so that it can schedule updates
@@ -557,6 +562,7 @@ function constructClassInstance(
     instance.state !== null && instance.state !== undefined
       ? instance.state
       : null);
+  // 在这里给 fiber.stateNode 赋值（dom 或 组件实例）
   adoptClassInstance(workInProgress, instance);
 
   if (__DEV__) {

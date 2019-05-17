@@ -2131,6 +2131,7 @@ function beginWork(
         renderExpirationTime,
       );
     }
+    // 创建组件的 fiber 对象（同时设置 fiber.stateNode ）
     case ClassComponent: {
       const Component = workInProgress.type;
       const unresolvedProps = workInProgress.pendingProps;
@@ -2138,6 +2139,7 @@ function beginWork(
         workInProgress.elementType === Component
           ? unresolvedProps
           : resolveDefaultProps(Component, unresolvedProps);
+      
       return updateClassComponent(
         current,
         workInProgress,
