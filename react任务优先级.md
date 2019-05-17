@@ -11,6 +11,8 @@
 React 对外暴露了 unstable_scheduleCallback 与 flushSync 两个 API，通过它们包裹的 setState 将具有不同的优先级，给开发者手动控制的能力。
 
 ```
+import {unstable_scheduleCallback} from 'scheduler';
+
 unstable_scheduleCallback(() => {
   // 异步低优先级任务，AsyncExpiration
   this.setState();
