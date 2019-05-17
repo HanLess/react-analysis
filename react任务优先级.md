@@ -1,5 +1,7 @@
 <a href="https://zhuanlan.zhihu.com/p/60307571">深入剖析 React Concurrent</a>
 
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/v2-7051c10497a34d2e65e5f4caabadf152_r.jpg" />
+
 #### React 内部是这样划分的：
 
 <ul>
