@@ -454,6 +454,7 @@ export function createWorkInProgress(
   return workInProgress;
 }
 // 创建 FiberRoot 的 current 属性
+// analysising 
 export function createHostRootFiber(isConcurrent: boolean): Fiber {
   let mode = isConcurrent ? ConcurrentMode | StrictMode : NoContext;
 
