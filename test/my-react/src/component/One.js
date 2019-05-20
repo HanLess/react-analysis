@@ -32,10 +32,14 @@ class One extends Component{
             let end = Date.now()
             console.log("init 时长 ：" + (end - start))
         })
+        setTimeout(() => {
+            this.changeName()
+        },3000)
+        
     }
 
-    changeItem = () => {
-        let len = this.state.items.length == 200 ? 20000 : 200
+    changeItem = (myLen) => {
+        let len = myLen || (this.state.items.length === 200 ? 20000 : 200)
         var arr = this.initItems(len);
         let start = Date.now()
         unstable_scheduleCallback(() => {
@@ -51,7 +55,7 @@ class One extends Component{
     changeName = () => {
         let name = this.state.name
         let start = Date.now()
-        flushSync(() => {
+        unstable_scheduleCallback(() => {
             this.setState({
                 name : name + 'e'
             },function(){

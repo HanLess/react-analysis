@@ -1783,6 +1783,8 @@ function resolveRetryThenable(boundaryFiber: Fiber, thenable: Thenable) {
 }
 
 /**
+ * 作用：从当前 fiber 向上遍历，沿途标记父节点（childExpirationTime），以告知有子节点有更新
+ * 
  * 
   （1）找到当前 Fiber 的 root
 
@@ -1912,11 +1914,13 @@ export function warnIfNotCurrentlyBatchingInDev(fiber: Fiber): void {
 }
 /**
  * 
- * @param {*} fiber root.current
+ * @param {*} fiber render 阶段 ：root.current
  * @param {*} expirationTime 
  */
 function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
   /**
+   * setState
+   * 
    * 第一步：从当前节点向上遍历，更新路径上的节点的 childExpirationTime 
    *        返回 FiberRoot 对象
    */
