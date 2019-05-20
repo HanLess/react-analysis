@@ -253,7 +253,7 @@ function FiberNode(
   this.memoizedState = null;  // 老 state，新 state 是由 updateQueue 计算出来的然后覆盖这里
   this.contextDependencies = null;  // context 相关
 
-  this.mode = mode; // 标记时创建，继承父节点 mod
+  this.mode = mode; // 标记时创建，继承父节点 mode
 
   // Effects
   this.effectTag = NoEffect; // 副作用编码，副作用说明详情见文档中 Effect Hook 部分
@@ -454,7 +454,6 @@ export function createWorkInProgress(
   return workInProgress;
 }
 // 创建 FiberRoot 的 current 属性
-// analysising 
 export function createHostRootFiber(isConcurrent: boolean): Fiber {
   let mode = isConcurrent ? ConcurrentMode | StrictMode : NoContext;
 

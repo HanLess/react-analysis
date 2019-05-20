@@ -1634,7 +1634,6 @@ function computeUniqueAsyncExpiration(): ExpirationTime {
   lastUniqueAsyncExpiration = result;
   return lastUniqueAsyncExpiration;
 }
-
 function computeExpirationForFiber(currentTime: ExpirationTime, fiber: Fiber) {
   let expirationTime;
   if (expirationContext !== NoWork) {
@@ -2064,7 +2063,8 @@ function recomputeCurrentRendererTime() {
   const currentTimeMs = now() - originalStartTimeMs;
   currentRendererTime = msToExpirationTime(currentTimeMs);
 }
-
+// analysising 
+// 分片任务会被打断，下次就只能空闲时「重新执行」：用如下方法处理此逻辑
 function scheduleCallbackWithExpirationTime(
   root: FiberRoot,
   expirationTime: ExpirationTime,
