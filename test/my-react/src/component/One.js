@@ -48,6 +48,19 @@ class One extends Component{
         })
     }
 
+    changeItemAgain = () => {
+        let len = this.state.items.length == 200 ? 30000 : 200
+        var arr = this.initItems(len);
+        let start = Date.now()
+        for(let i = 0;i < len;i ++){
+            let now = this.state.items;
+            now[i] = arr[i];
+            this.setState({
+                items : now
+            })
+        }
+    }
+
     changeName = () => {
         let name = this.state.name
         let start = Date.now()
@@ -66,6 +79,7 @@ class One extends Component{
             <div>
                 <h1 onClick={this.changeName}>one name is {this.state.name}</h1>
                 <p onClick={this.changeItem}>change item</p>
+                <p onClick={this.changeItemAgain}>change item again</p>
                 {
                     this.state.items.map((val,index) => {
                         return (<div><div>{val['key']}</div></div>)
