@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%; overflow: hidden">
+  <head>
+    <meta charset="utf-8">
+    <title>Fiber Example</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+          "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+          monospace;
+      }
+
+      .App {
+        text-align: center;
+      }
+
+      .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+        height: 40vmin;
+        pointer-events: none;
+      }
+
+      .App-header {
+        background-color: #282c34;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(10px + 2vmin);
+        color: white;
+      }
+
+      .App-link {
+        color: #61dafb;
+      }
+
+      @keyframes App-logo-spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="../../build/node_modules/react/umd/react.development.js"></script>
+    <script src="../../build/node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.js"></script>
+    <script type="text/babel">
+      // One
+    class One extends React.Component{
+        constructor (option) {
+            super(option);
+            this.state = {
+                name : 'one',
+                age : 0,
+                items : []
+            };
+        }
+
+        initItems = (num) => {
+            let len = num
+            let arr = []
+            for (let i = 0; i < len; i ++) {
+                let obj = {}
+                obj['key'] = parseInt(Math.random() * len)
+                arr.push(obj)
+            }
+            return arr
+        }
+
+        componentDidMount() {
+            let arr = this.initItems(200)
+            let start = Date.now()
+            this.setState({
+                items : arr
+            },function(){
+                let end = Date.now()
+                console.log("init 时长 ：" + (end - start))
+            })
+        }
+
+        changeItem = () => {
+            let len = this.state.items.length == 200 ? 20000 : 200
+            var arr = this.initItems(len);
+            let start = Date.now()
+            // unstable_scheduleCallback(() => {
+                this.setState({
+                    items : arr
+                },function(){
+                    let end = Date.now()
+                    console.log('change 时长 ：' + (end - start))
+                })
+            // })
+        }
+
+        changeItemAgain = () => {
+            let len = this.state.items.length == 200 ? 30000 : 200
+            var arr = this.initItems(len);
+            let start = Date.now()
+            for(let i = 0;i < len;i ++){
+                let now = this.state.items;
+                now[i] = arr[i];
+                this.setState({
+                    items : now
+                })
+            }
+        }
+
+        changeName = () => {
+            let name = this.state.name
+            let start = Date.now()
+            // flushSync(() => {
+                this.setState({
+                    name : name + 'e'
+                },function(){
+                    let end = Date.now()
+                console.log('change name 时长 ：' + (end - start))
+                })
+            // })
+        }
+
+        render () {
+            return (
+                <div>
+                    <h1 onClick={this.changeName}>one name is {this.state.name}</h1>
+                    <p onClick={this.changeItem}>change item</p>
+                    <p onClick={this.changeItemAgain}>change item again</p>
+                    {
+                        this.state.items.map((val,index) => {
+                            return (<div><div>{val['key']}</div></div>)
+                        })
+                    }
+                </div>
+            )
+        }
+    }
+
+
+    // App
+    class App extends React.Component {
+
+      componentDidMount(){
+        
+      }
+
+      constructor (options) {
+        super(options)
+        this.state = {
+          name : "app"
+        }
+      }
+
+      remind = () => {
+        console.log("click by react !")
+      }
+
+      click_img = () => {
+        console.log("click img ")
+      }
+
+      changeName = () => {
+        let name = this.state.name
+        let start = Date.now()
+        ReactDOM.flushSync(() => {
+            this.setState({
+                name : name + 'e'
+            },function(){
+                let end = Date.now()
+            console.log('change name 时长 ：' + (end - start))
+            })
+        })
+      }
+
+      render() {
+        return (
+          <div className="App">
+            <header className="App-header">
+              <h1 onClick={this.changeName}>app name is {this.state.name}</h1>
+              <One />
+            </header>
+          </div>
+        );
+      }
+    }
+      
+
+    var root = ReactDOM.unstable_createRoot(document.getElementById('root'));
+    root.render(<App />)
+    </script> 
+  </body>
+</html>

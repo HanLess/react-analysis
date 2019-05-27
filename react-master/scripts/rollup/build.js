@@ -25,6 +25,8 @@ const {asyncCopyTo, asyncRimRaf} = require('./utils');
 const codeFrame = require('babel-code-frame');
 const Wrappers = require('./wrappers');
 
+var myBuild = argv.myBuild;
+
 // Errors in promises should be fatal.
 let loggedErrors = new Set();
 process.on('unhandledRejection', err => {
@@ -611,6 +613,11 @@ async function buildEverything() {
   // and to avoid any potential race conditions.
   // eslint-disable-next-line no-for-of-loops/no-for-of-loops
   for (const bundle of Bundles.bundles) {
+    if (myBuild) {
+      await createBundle(bundle, UMD_DEV);
+      continue;
+    }
+    await createBundle(bundle, UMD_PROD);
     await createBundle(bundle, UMD_DEV);
     await createBundle(bundle, UMD_PROD);
     await createBundle(bundle, UMD_PROFILING);

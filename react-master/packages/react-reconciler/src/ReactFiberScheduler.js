@@ -2336,6 +2336,7 @@ function findHighestPriorityRoot() {
 }
 // analysising
 function performAsyncWork(didTimeout) {
+  console.log("performAsyncWork run !")
   if (didTimeout) {
     // The callback timed out. That means at least one update has expired.
     // Iterate through the root schedule. If they contain expired work, set
