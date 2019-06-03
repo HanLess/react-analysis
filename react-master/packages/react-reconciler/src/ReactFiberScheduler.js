@@ -2068,13 +2068,21 @@ function scheduleCallbackWithExpirationTime(
   root: FiberRoot,
   expirationTime: ExpirationTime,
 ) {
+  // console.log(expirationTime , callbackExpirationTime) 
   if (callbackExpirationTime !== NoWork) {
+    // console.log("not nowork")
     // A callback is already scheduled. Check its expiration time (timeout).
+    /**
+     * 第一个 setState 后，callbackExpirationTime 被赋值为它的 expirationTime
+     * 第二 setState 进来，用自己的 expirationTime 与前一个比较，如果小，说明前一个 setState 还有执行时间，则等待第一个 setState 执行
+     */
     if (expirationTime < callbackExpirationTime) {
       // Existing callback has sufficient timeout. Exit.
       return;
     } else {
       if (callbackID !== null) {
+        // console.log("run cancelCallback")
+        // console.log('===========',callbackID)
         // Existing callback has insufficient timeout. Cancel and schedule a
         // new one.
         cancelCallback(callbackID);
@@ -2084,12 +2092,16 @@ function scheduleCallbackWithExpirationTime(
   } else {
     startRequestCallbackTimer();
   }
-
+// console.log('------', callbackID)
   callbackExpirationTime = expirationTime;
   const currentMs = now() - originalStartTimeMs;
   const expirationTimeMs = expirationTimeToMs(expirationTime);
   const timeout = expirationTimeMs - currentMs;
+  /**
+   * scheduleCallback 中会不断清空 callbackID ？ analysising
+   */
   callbackID = scheduleCallback(performAsyncWork, {timeout});
+  // console.log('++++++++', callbackID)   : null
 }
 
 // For every call to renderRoot, one of onFatal, onComplete, onSuspend, and
@@ -2334,7 +2346,6 @@ function findHighestPriorityRoot() {
   nextFlushedRoot = highestPriorityRoot;
   nextFlushedExpirationTime = highestPriorityWork;
 }
-// analysising
 function performAsyncWork(didTimeout) {
   console.log("performAsyncWork run !")
   if (didTimeout) {

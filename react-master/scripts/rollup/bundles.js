@@ -92,375 +92,375 @@ const bundles = [
   },
 
   /******* React Fire *******/
-  {
-    bundleTypes: [
-      UMD_DEV,
-      UMD_PROD,
-      UMD_PROFILING,
-      NODE_DEV,
-      NODE_PROD,
-      NODE_PROFILING,
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-      FB_WWW_PROFILING,
-    ],
-    moduleType: RENDERER,
-    entry: 'react-dom/unstable-fire',
-    global: 'ReactFire',
-    externals: ['react'],
-  },
+  // {
+  //   bundleTypes: [
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //     UMD_PROFILING,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     NODE_PROFILING,
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //     FB_WWW_PROFILING,
+  //   ],
+  //   moduleType: RENDERER,
+  //   entry: 'react-dom/unstable-fire',
+  //   global: 'ReactFire',
+  //   externals: ['react'],
+  // },
 
-  /******* Test Utils *******/
-  {
-    moduleType: RENDERER_UTILS,
-    bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
-    entry: 'react-dom/test-utils',
-    global: 'ReactTestUtils',
-    externals: ['react', 'react-dom'],
-  },
+  // /******* Test Utils *******/
+  // {
+  //   moduleType: RENDERER_UTILS,
+  //   bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
+  //   entry: 'react-dom/test-utils',
+  //   global: 'ReactTestUtils',
+  //   externals: ['react', 'react-dom'],
+  // },
 
-  /* React DOM internals required for react-native-web (e.g., to shim native events from react-dom) */
-  {
-    bundleTypes: [
-      UMD_DEV,
-      UMD_PROD,
-      NODE_DEV,
-      NODE_PROD,
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-    ],
-    moduleType: RENDERER_UTILS,
-    entry: 'react-dom/unstable-native-dependencies',
-    global: 'ReactDOMUnstableNativeDependencies',
-    externals: ['react', 'react-dom'],
-  },
+  // /* React DOM internals required for react-native-web (e.g., to shim native events from react-dom) */
+  // {
+  //   bundleTypes: [
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //   ],
+  //   moduleType: RENDERER_UTILS,
+  //   entry: 'react-dom/unstable-native-dependencies',
+  //   global: 'ReactDOMUnstableNativeDependencies',
+  //   externals: ['react', 'react-dom'],
+  // },
 
-  /******* React DOM Server *******/
-  {
-    bundleTypes: [
-      UMD_DEV,
-      UMD_PROD,
-      NODE_DEV,
-      NODE_PROD,
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-    ],
-    moduleType: NON_FIBER_RENDERER,
-    entry: 'react-dom/server.browser',
-    global: 'ReactDOMServer',
-    externals: ['react'],
-  },
+  // /******* React DOM Server *******/
+  // {
+  //   bundleTypes: [
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //   ],
+  //   moduleType: NON_FIBER_RENDERER,
+  //   entry: 'react-dom/server.browser',
+  //   global: 'ReactDOMServer',
+  //   externals: ['react'],
+  // },
 
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: NON_FIBER_RENDERER,
-    entry: 'react-dom/server.node',
-    externals: ['react', 'stream'],
-  },
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: NON_FIBER_RENDERER,
+  //   entry: 'react-dom/server.node',
+  //   externals: ['react', 'stream'],
+  // },
 
-  /******* React DOM Fizz Server *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
-    moduleType: RENDERER,
-    entry: 'react-dom/unstable-fizz.browser',
-    global: 'ReactDOMFizzServer',
-    externals: ['react'],
-  },
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
-    moduleType: RENDERER,
-    entry: 'react-dom/unstable-fizz.node',
-    global: 'ReactDOMFizzServer',
-    externals: ['react'],
-  },
+  // /******* React DOM Fizz Server *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-dom/unstable-fizz.browser',
+  //   global: 'ReactDOMFizzServer',
+  //   externals: ['react'],
+  // },
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-dom/unstable-fizz.node',
+  //   global: 'ReactDOMFizzServer',
+  //   externals: ['react'],
+  // },
 
-  /******* React ART *******/
-  {
-    bundleTypes: [
-      UMD_DEV,
-      UMD_PROD,
-      NODE_DEV,
-      NODE_PROD,
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-    ],
-    moduleType: RENDERER,
-    entry: 'react-art',
-    global: 'ReactART',
-    externals: ['react'],
-    babel: opts =>
-      Object.assign({}, opts, {
-        // Include JSX
-        presets: opts.presets.concat([require.resolve('babel-preset-react')]),
-      }),
-  },
+  // /******* React ART *******/
+  // {
+  //   bundleTypes: [
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //   ],
+  //   moduleType: RENDERER,
+  //   entry: 'react-art',
+  //   global: 'ReactART',
+  //   externals: ['react'],
+  //   babel: opts =>
+  //     Object.assign({}, opts, {
+  //       // Include JSX
+  //       presets: opts.presets.concat([require.resolve('babel-preset-react')]),
+  //     }),
+  // },
 
-  /******* React Native *******/
-  {
-    bundleTypes: [RN_FB_DEV, RN_FB_PROD, RN_FB_PROFILING],
-    moduleType: RENDERER,
-    entry: 'react-native-renderer',
-    global: 'ReactNativeRenderer',
-    externals: [
-      'ExceptionsManager',
-      'InitializeCore',
-      'Platform',
-      'RCTEventEmitter',
-      'TextInputState',
-      'UIManager',
-      'deepDiffer',
-      'deepFreezeAndThrowOnMutationInDev',
-      'flattenStyle',
-      'ReactNativeViewConfigRegistry',
-    ],
-  },
+  // /******* React Native *******/
+  // {
+  //   bundleTypes: [RN_FB_DEV, RN_FB_PROD, RN_FB_PROFILING],
+  //   moduleType: RENDERER,
+  //   entry: 'react-native-renderer',
+  //   global: 'ReactNativeRenderer',
+  //   externals: [
+  //     'ExceptionsManager',
+  //     'InitializeCore',
+  //     'Platform',
+  //     'RCTEventEmitter',
+  //     'TextInputState',
+  //     'UIManager',
+  //     'deepDiffer',
+  //     'deepFreezeAndThrowOnMutationInDev',
+  //     'flattenStyle',
+  //     'ReactNativeViewConfigRegistry',
+  //   ],
+  // },
 
-  {
-    bundleTypes: [RN_OSS_DEV, RN_OSS_PROD, RN_OSS_PROFILING],
-    moduleType: RENDERER,
-    entry: 'react-native-renderer',
-    global: 'ReactNativeRenderer',
-    externals: [
-      'ExceptionsManager',
-      'InitializeCore',
-      'Platform',
-      'RCTEventEmitter',
-      'TextInputState',
-      'UIManager',
-      'deepDiffer',
-      'deepFreezeAndThrowOnMutationInDev',
-      'flattenStyle',
-      'ReactNativeViewConfigRegistry',
-    ],
-  },
+  // {
+  //   bundleTypes: [RN_OSS_DEV, RN_OSS_PROD, RN_OSS_PROFILING],
+  //   moduleType: RENDERER,
+  //   entry: 'react-native-renderer',
+  //   global: 'ReactNativeRenderer',
+  //   externals: [
+  //     'ExceptionsManager',
+  //     'InitializeCore',
+  //     'Platform',
+  //     'RCTEventEmitter',
+  //     'TextInputState',
+  //     'UIManager',
+  //     'deepDiffer',
+  //     'deepFreezeAndThrowOnMutationInDev',
+  //     'flattenStyle',
+  //     'ReactNativeViewConfigRegistry',
+  //   ],
+  // },
 
-  /******* React Native Fabric *******/
-  {
-    bundleTypes: [RN_FB_DEV, RN_FB_PROD, RN_FB_PROFILING],
-    moduleType: RENDERER,
-    entry: 'react-native-renderer/fabric',
-    global: 'ReactFabric',
-    externals: [
-      'ExceptionsManager',
-      'InitializeCore',
-      'Platform',
-      'RCTEventEmitter',
-      'TextInputState',
-      'UIManager',
-      'FabricUIManager',
-      'deepDiffer',
-      'deepFreezeAndThrowOnMutationInDev',
-      'flattenStyle',
-      'ReactNativeViewConfigRegistry',
-    ],
-  },
+  // /******* React Native Fabric *******/
+  // {
+  //   bundleTypes: [RN_FB_DEV, RN_FB_PROD, RN_FB_PROFILING],
+  //   moduleType: RENDERER,
+  //   entry: 'react-native-renderer/fabric',
+  //   global: 'ReactFabric',
+  //   externals: [
+  //     'ExceptionsManager',
+  //     'InitializeCore',
+  //     'Platform',
+  //     'RCTEventEmitter',
+  //     'TextInputState',
+  //     'UIManager',
+  //     'FabricUIManager',
+  //     'deepDiffer',
+  //     'deepFreezeAndThrowOnMutationInDev',
+  //     'flattenStyle',
+  //     'ReactNativeViewConfigRegistry',
+  //   ],
+  // },
 
-  {
-    bundleTypes: [RN_OSS_DEV, RN_OSS_PROD, RN_OSS_PROFILING],
-    moduleType: RENDERER,
-    entry: 'react-native-renderer/fabric',
-    global: 'ReactFabric',
-    externals: [
-      'ExceptionsManager',
-      'InitializeCore',
-      'Platform',
-      'RCTEventEmitter',
-      'TextInputState',
-      'UIManager',
-      'FabricUIManager',
-      'deepDiffer',
-      'deepFreezeAndThrowOnMutationInDev',
-      'flattenStyle',
-      'ReactNativeViewConfigRegistry',
-    ],
-  },
+  // {
+  //   bundleTypes: [RN_OSS_DEV, RN_OSS_PROD, RN_OSS_PROFILING],
+  //   moduleType: RENDERER,
+  //   entry: 'react-native-renderer/fabric',
+  //   global: 'ReactFabric',
+  //   externals: [
+  //     'ExceptionsManager',
+  //     'InitializeCore',
+  //     'Platform',
+  //     'RCTEventEmitter',
+  //     'TextInputState',
+  //     'UIManager',
+  //     'FabricUIManager',
+  //     'deepDiffer',
+  //     'deepFreezeAndThrowOnMutationInDev',
+  //     'flattenStyle',
+  //     'ReactNativeViewConfigRegistry',
+  //   ],
+  // },
 
-  /******* React Test Renderer *******/
-  {
-    bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
-    moduleType: RENDERER,
-    entry: 'react-test-renderer',
-    global: 'ReactTestRenderer',
-    externals: ['react', 'scheduler', 'scheduler/unstable_mock'],
-  },
+  // /******* React Test Renderer *******/
+  // {
+  //   bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-test-renderer',
+  //   global: 'ReactTestRenderer',
+  //   externals: ['react', 'scheduler', 'scheduler/unstable_mock'],
+  // },
 
-  {
-    bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
-    moduleType: NON_FIBER_RENDERER,
-    entry: 'react-test-renderer/shallow',
-    global: 'ReactShallowRenderer',
-    externals: ['react', 'scheduler', 'scheduler/unstable_mock'],
-  },
+  // {
+  //   bundleTypes: [FB_WWW_DEV, NODE_DEV, NODE_PROD, UMD_DEV, UMD_PROD],
+  //   moduleType: NON_FIBER_RENDERER,
+  //   entry: 'react-test-renderer/shallow',
+  //   global: 'ReactShallowRenderer',
+  //   externals: ['react', 'scheduler', 'scheduler/unstable_mock'],
+  // },
 
-  /******* React Noop Renderer (used for tests) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RENDERER,
-    entry: 'react-noop-renderer',
-    global: 'ReactNoopRenderer',
-    externals: ['react', 'scheduler', 'scheduler/unstable_mock', 'expect'],
-  },
+  // /******* React Noop Renderer (used for tests) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-noop-renderer',
+  //   global: 'ReactNoopRenderer',
+  //   externals: ['react', 'scheduler', 'scheduler/unstable_mock', 'expect'],
+  // },
 
-  /******* React Noop Persistent Renderer (used for tests) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RENDERER,
-    entry: 'react-noop-renderer/persistent',
-    global: 'ReactNoopRendererPersistent',
-    externals: ['react', 'scheduler', 'expect'],
-  },
+  // /******* React Noop Persistent Renderer (used for tests) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-noop-renderer/persistent',
+  //   global: 'ReactNoopRendererPersistent',
+  //   externals: ['react', 'scheduler', 'expect'],
+  // },
 
-  /******* React Noop Server Renderer (used for tests) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RENDERER,
-    entry: 'react-noop-renderer/server',
-    global: 'ReactNoopRendererServer',
-    externals: ['react', 'scheduler', 'expect'],
-  },
+  // /******* React Noop Server Renderer (used for tests) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RENDERER,
+  //   entry: 'react-noop-renderer/server',
+  //   global: 'ReactNoopRendererServer',
+  //   externals: ['react', 'scheduler', 'expect'],
+  // },
 
-  /******* React Reconciler *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RECONCILER,
-    entry: 'react-reconciler',
-    global: 'ReactReconciler',
-    externals: ['react'],
-  },
+  // /******* React Reconciler *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RECONCILER,
+  //   entry: 'react-reconciler',
+  //   global: 'ReactReconciler',
+  //   externals: ['react'],
+  // },
 
-  /******* React Persistent Reconciler *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RECONCILER,
-    entry: 'react-reconciler/persistent',
-    global: 'ReactPersistentReconciler',
-    externals: ['react'],
-  },
+  // /******* React Persistent Reconciler *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RECONCILER,
+  //   entry: 'react-reconciler/persistent',
+  //   global: 'ReactPersistentReconciler',
+  //   externals: ['react'],
+  // },
 
-  /******* React Stream *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: RECONCILER,
-    entry: 'react-stream',
-    global: 'ReactStream',
-    externals: ['react'],
-  },
+  // /******* React Stream *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: RECONCILER,
+  //   entry: 'react-stream',
+  //   global: 'ReactStream',
+  //   externals: ['react'],
+  // },
 
-  /******* Reflection *******/
-  {
-    moduleType: RENDERER_UTILS,
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    entry: 'react-reconciler/reflection',
-    global: 'ReactFiberTreeReflection',
-    externals: [],
-  },
+  // /******* Reflection *******/
+  // {
+  //   moduleType: RENDERER_UTILS,
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   entry: 'react-reconciler/reflection',
+  //   global: 'ReactFiberTreeReflection',
+  //   externals: [],
+  // },
 
-  /******* React Is *******/
-  {
-    bundleTypes: [
-      NODE_DEV,
-      NODE_PROD,
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-      UMD_DEV,
-      UMD_PROD,
-    ],
-    moduleType: ISOMORPHIC,
-    entry: 'react-is',
-    global: 'ReactIs',
-    externals: [],
-  },
+  // /******* React Is *******/
+  // {
+  //   bundleTypes: [
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //   ],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'react-is',
+  //   global: 'ReactIs',
+  //   externals: [],
+  // },
 
-  /******* React Debug Tools *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: ISOMORPHIC,
-    entry: 'react-debug-tools',
-    global: 'ReactDebugTools',
-    externals: [],
-  },
+  // /******* React Debug Tools *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'react-debug-tools',
+  //   global: 'ReactDebugTools',
+  //   externals: [],
+  // },
 
-  /******* React Cache (experimental) *******/
-  {
-    bundleTypes: [
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-      NODE_DEV,
-      NODE_PROD,
-      UMD_DEV,
-      UMD_PROD,
-    ],
-    moduleType: ISOMORPHIC,
-    entry: 'react-cache',
-    global: 'ReactCache',
-    externals: ['react', 'scheduler'],
-  },
+  // /******* React Cache (experimental) *******/
+  // {
+  //   bundleTypes: [
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     UMD_DEV,
+  //     UMD_PROD,
+  //   ],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'react-cache',
+  //   global: 'ReactCache',
+  //   externals: ['react', 'scheduler'],
+  // },
 
-  /******* createComponentWithSubscriptions (experimental) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD],
-    moduleType: ISOMORPHIC,
-    entry: 'create-subscription',
-    global: 'createSubscription',
-    externals: ['react'],
-  },
+  // /******* createComponentWithSubscriptions (experimental) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'create-subscription',
+  //   global: 'createSubscription',
+  //   externals: ['react'],
+  // },
 
-  /******* React Scheduler (experimental) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
-    moduleType: ISOMORPHIC,
-    entry: 'scheduler',
-    global: 'Scheduler',
-    externals: [],
-  },
+  // /******* React Scheduler (experimental) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'scheduler',
+  //   global: 'Scheduler',
+  //   externals: [],
+  // },
 
-  /******* React Scheduler Mock (experimental) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
-    moduleType: ISOMORPHIC,
-    entry: 'scheduler/unstable_mock',
-    global: 'SchedulerMock',
-    externals: [],
-  },
+  // /******* React Scheduler Mock (experimental) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'scheduler/unstable_mock',
+  //   global: 'SchedulerMock',
+  //   externals: [],
+  // },
 
-  /******* Jest React (experimental) *******/
-  {
-    bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
-    moduleType: ISOMORPHIC,
-    entry: 'jest-react',
-    global: 'JestReact',
-    externals: [],
-  },
+  // /******* Jest React (experimental) *******/
+  // {
+  //   bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV, FB_WWW_PROD],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'jest-react',
+  //   global: 'JestReact',
+  //   externals: [],
+  // },
 
-  /******* ESLint Plugin for Hooks (proposal) *******/
-  {
-    // TODO: it's awkward to create a bundle for this
-    // but if we don't, the package won't get copied.
-    // We also can't create just DEV bundle because
-    // it contains a NODE_ENV check inside.
-    // We should probably tweak our build process
-    // to allow "raw" packages that don't get bundled.
-    bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV],
-    moduleType: ISOMORPHIC,
-    entry: 'eslint-plugin-react-hooks',
-    global: 'ESLintPluginReactHooks',
-    externals: [],
-  },
+  // /******* ESLint Plugin for Hooks (proposal) *******/
+  // {
+  //   // TODO: it's awkward to create a bundle for this
+  //   // but if we don't, the package won't get copied.
+  //   // We also can't create just DEV bundle because
+  //   // it contains a NODE_ENV check inside.
+  //   // We should probably tweak our build process
+  //   // to allow "raw" packages that don't get bundled.
+  //   bundleTypes: [NODE_DEV, NODE_PROD, FB_WWW_DEV],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'eslint-plugin-react-hooks',
+  //   global: 'ESLintPluginReactHooks',
+  //   externals: [],
+  // },
 
-  {
-    bundleTypes: [
-      FB_WWW_DEV,
-      FB_WWW_PROD,
-      FB_WWW_PROFILING,
-      NODE_DEV,
-      NODE_PROD,
-      NODE_PROFILING,
-    ],
-    moduleType: ISOMORPHIC,
-    entry: 'scheduler/tracing',
-    global: 'SchedulerTracing',
-    externals: [],
-  },
+  // {
+  //   bundleTypes: [
+  //     FB_WWW_DEV,
+  //     FB_WWW_PROD,
+  //     FB_WWW_PROFILING,
+  //     NODE_DEV,
+  //     NODE_PROD,
+  //     NODE_PROFILING,
+  //   ],
+  //   moduleType: ISOMORPHIC,
+  //   entry: 'scheduler/tracing',
+  //   global: 'SchedulerTracing',
+  //   externals: [],
+  // },
 ];
 
 // Based on deep-freeze by substack (public domain)

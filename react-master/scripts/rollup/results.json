@@ -46,8 +46,8 @@
       "filename": "react-dom.development.js",
       "bundleType": "UMD_DEV",
       "packageName": "react-dom",
-      "size": 813274,
-      "gzip": 190098
+      "size": 813816,
+      "gzip": 190275
     },
     {
       "filename": "react-dom.production.min.js",
@@ -221,8 +221,8 @@
       "filename": "react-art.development.js",
       "bundleType": "UMD_DEV",
       "packageName": "react-art",
-      "size": 579541,
-      "gzip": 130636
+      "size": 579596,
+      "gzip": 130649
     },
     {
       "filename": "react-art.production.min.js",
@@ -291,8 +291,8 @@
       "filename": "react-test-renderer.development.js",
       "bundleType": "UMD_DEV",
       "packageName": "react-test-renderer",
-      "size": 517818,
-      "gzip": 114539
+      "size": 517873,
+      "gzip": 114548
     },
     {
       "filename": "react-test-renderer.production.min.js",
@@ -1033,8 +1033,8 @@
       "filename": "react-dom-unstable-fire.development.js",
       "bundleType": "UMD_DEV",
       "packageName": "react-dom",
-      "size": 813129,
-      "gzip": 190028
+      "size": 813184,
+      "gzip": 190037
     },
     {
       "filename": "react-dom-unstable-fire.production.min.js",
