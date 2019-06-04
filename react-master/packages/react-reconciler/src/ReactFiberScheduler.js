@@ -1852,7 +1852,6 @@ function scheduleWorkToRoot(fiber: Fiber, expirationTime): FiberRoot | null {
       node = node.return;
     }
   }
-
   if (enableSchedulerTracing) {
     if (root !== null) {
       const interactions = __interactionsRef.current;
@@ -2068,7 +2067,6 @@ function scheduleCallbackWithExpirationTime(
   root: FiberRoot,
   expirationTime: ExpirationTime,
 ) {
-  // console.log(expirationTime , callbackExpirationTime) 
   if (callbackExpirationTime !== NoWork) {
     // console.log("not nowork")
     // A callback is already scheduled. Check its expiration time (timeout).
@@ -2081,8 +2079,6 @@ function scheduleCallbackWithExpirationTime(
       return;
     } else {
       if (callbackID !== null) {
-        // console.log("run cancelCallback")
-        // console.log('===========',callbackID)
         // Existing callback has insufficient timeout. Cancel and schedule a
         // new one.
         cancelCallback(callbackID);
@@ -2092,16 +2088,14 @@ function scheduleCallbackWithExpirationTime(
   } else {
     startRequestCallbackTimer();
   }
-// console.log('------', callbackID)
   callbackExpirationTime = expirationTime;
   const currentMs = now() - originalStartTimeMs;
   const expirationTimeMs = expirationTimeToMs(expirationTime);
   const timeout = expirationTimeMs - currentMs;
   /**
-   * scheduleCallback 中会不断清空 callbackID ？ analysising
+   * performAsyncWork 中会不断清空 callbackID 
    */
   callbackID = scheduleCallback(performAsyncWork, {timeout});
-  // console.log('++++++++', callbackID)   : null
 }
 
 // For every call to renderRoot, one of onFatal, onComplete, onSuspend, and
@@ -2217,7 +2211,6 @@ function requestCurrentTime() {
 function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
   addRootToSchedule(root, expirationTime);
-
   // 在 commitRoot 阶段，isRendering 为 true
   if (isRendering) {
     // Prevent reentrancy. Remaining work will be scheduled at the end of

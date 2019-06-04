@@ -56,6 +56,7 @@
     </style>
   </head>
   <body>
+    <div id="root2"></div>
     <div id="root"></div>
     <script src="../../build/node_modules/react/umd/react.development.js"></script>
     <script src="../../build/node_modules/react-dom/umd/react-dom.development.js"></script>
@@ -105,8 +106,8 @@
                   console.log('change 时长 ：' + (end - start))
               })
               setTimeout(() => {
-                // this.changeName()
-              }, 300);
+                this.changeName()
+              }, 200);
         }
 
         changeItemAgain = () => {
@@ -202,6 +203,32 @@
 
     var root = ReactDOM.unstable_createRoot(document.getElementById('root'));
     root.render(<App />)
+    // ReactDOM.render(<App />,document.getElementById('root'));
+
+
+    class Two extends React.Component {
+      constructor(option){
+        super(option)
+        this.state = {
+          name : "Two"
+        }
+      }
+
+      changeName = () => {
+        let name = this.state.name + 'o'
+        this.setState({
+          name : name
+        })
+      }
+
+      render () {
+        return (
+          <h1 onClick={this.changeName}>{this.state.name}</h1>
+        )
+      }
+    }
+
+    var root2 = ReactDOM.render(<Two />,document.getElementById('root2'))
     </script> 
   </body>
 </html>

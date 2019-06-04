@@ -178,7 +178,6 @@ function scheduleRootUpdate(
   enqueueUpdate(current, update);
   // scheduleWork 是执行更新的过程，此时 current.updateQueue 已经初始化，update 已经存在里面
   scheduleWork(current, expirationTime);
-
   return expirationTime;
 }
 
