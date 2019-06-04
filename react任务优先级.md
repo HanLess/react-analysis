@@ -28,3 +28,5 @@ onClick={() => {
   this.setState();
 }}
 ```
+
+通过在 scheduleCallbackWithExpirationTime 输出log 可以发现：flushSync 会优先于 普通的 setState 执行更新
