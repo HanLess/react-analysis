@@ -109,6 +109,7 @@ function releaseTopLevelCallbackBookKeeping(
 /**
  * 
     绑定事件（如 onClick）触发的主要逻辑
+    analysising https://juejin.im/post/5bdf0741e51d456b8e1d60be
  */
 function handleTopLevel(bookKeeping: BookKeepingInstance) {
   let targetInst = bookKeeping.targetInst;
