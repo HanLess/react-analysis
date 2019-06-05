@@ -583,6 +583,7 @@ function commitPassiveEffects(root: FiberRoot, firstEffect: Fiber): void {
   }
   // Flush any sync work that was scheduled by effects
   if (!isBatchingUpdates && !isRendering) {
+    console.log("点位 1 ------------------------------------------")
     performSyncWork();
   }
 }
@@ -1915,7 +1916,7 @@ export function warnIfNotCurrentlyBatchingInDev(fiber: Fiber): void {
  * @param {*} fiber render 阶段 ：root.current
  * @param {*} expirationTime 
  */
-function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
+function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime,payload) {
   /**
    * setState
    * 
@@ -1980,7 +1981,7 @@ function scheduleWork(fiber: Fiber, expirationTime: ExpirationTime) {
      * 
      * root : FiberRoot
      */
-    requestWork(root, rootExpirationTime);
+    requestWork(root, rootExpirationTime,payload);
   }
   if (nestedUpdateCount > NESTED_UPDATE_LIMIT) {
     // Reset this back to zero so subsequent updates don't throw.
@@ -2066,6 +2067,7 @@ function recomputeCurrentRendererTime() {
 function scheduleCallbackWithExpirationTime(
   root: FiberRoot,
   expirationTime: ExpirationTime,
+  payload
 ) {
   if (callbackExpirationTime !== NoWork) {
     // console.log("not nowork")
@@ -2095,7 +2097,8 @@ function scheduleCallbackWithExpirationTime(
   /**
    * performAsyncWork 中会不断清空 callbackID 
    */
-  callbackID = scheduleCallback(performAsyncWork, {timeout});
+  console.log("scheduleCallbackWithExpirationTime scheduleCallback run ")
+  callbackID = scheduleCallback(performAsyncWork, {timeout},payload);
 }
 
 // For every call to renderRoot, one of onFatal, onComplete, onSuspend, and
@@ -2208,9 +2211,10 @@ function requestCurrentTime() {
 
 // requestWork is called by the scheduler whenever a root receives an update.
 // It's up to the renderer to call renderRoot at some point in the future.
-function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
+function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
   addRootToSchedule(root, expirationTime);
+  console.log("request running !",expirationTime,isRendering,isBatchingUpdates,isUnbatchingUpdates,Sync,payload)
   // 在 commitRoot 阶段，isRendering 为 true
   if (isRendering) {
     // Prevent reentrancy. Remaining work will be scheduled at the end of
@@ -2229,12 +2233,13 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime) {
     }
     return;
   }
-
   // TODO: Get rid of Sync and use current time?
   if (expirationTime === Sync) {
+    console.log("点位 2 ------------------------------------------",expirationTime , Sync)
     performSyncWork();
   } else {
-    scheduleCallbackWithExpirationTime(root, expirationTime);
+    console.log('expirationTime ****************',expirationTime,payload)
+    scheduleCallbackWithExpirationTime(root, expirationTime,payload);
   }
 }
 
@@ -2424,6 +2429,7 @@ function performWork(minExpirationTime: ExpirationTime, isYieldy: boolean) {
     callbackID = null;
   }
   // If there's work left over, schedule a new callback.
+  console.log("performWork run ^^^^^^^^^^^^^",nextFlushedExpirationTime,minExpirationTime,isYieldy)
   if (nextFlushedExpirationTime !== NoWork) {
     scheduleCallbackWithExpirationTime(
       ((nextFlushedRoot: any): FiberRoot),
@@ -2448,6 +2454,7 @@ function flushRoot(root: FiberRoot, expirationTime: ExpirationTime) {
   nextFlushedExpirationTime = expirationTime;
   performWorkOnRoot(root, expirationTime, false);
   // Flush any sync work that was scheduled by lifecycles
+  console.log("点位 3 ------------------------------------------")
   performSyncWork();
 }
 
@@ -2623,6 +2630,7 @@ function batchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   } finally {
     isBatchingUpdates = previousIsBatchingUpdates;
     if (!isBatchingUpdates && !isRendering) {
+      console.log("点位 4 ------------------------------------------")
       performSyncWork();
     }
   }
@@ -2656,6 +2664,7 @@ function flushSync<A, R>(fn: (a: A) => R, a: A): R {
     return syncUpdates(fn, a);
   } finally {
     isBatchingUpdates = previousIsBatchingUpdates;
+    console.log("点位 5 ------------------------------------------")
     performSyncWork();
   }
 }
@@ -2692,6 +2701,7 @@ function interactiveUpdates<A, B, C, R>(
     isBatchingInteractiveUpdates = previousIsBatchingInteractiveUpdates;
     isBatchingUpdates = previousIsBatchingUpdates;
     if (!isBatchingUpdates && !isRendering) {
+      console.log("点位 6 ------------------------------------------")
       performSyncWork();
     }
   }
@@ -2716,6 +2726,7 @@ function flushControlled(fn: () => mixed): void {
   } finally {
     isBatchingUpdates = previousIsBatchingUpdates;
     if (!isBatchingUpdates && !isRendering) {
+      console.log("点位 7 ------------------------------------------")
       performSyncWork();
     }
   }

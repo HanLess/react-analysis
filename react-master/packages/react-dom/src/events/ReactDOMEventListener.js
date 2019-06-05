@@ -106,6 +106,10 @@ function releaseTopLevelCallbackBookKeeping(
   }
 }
 
+/**
+ * 
+    绑定事件（如 onClick）触发的主要逻辑
+ */
 function handleTopLevel(bookKeeping: BookKeepingInstance) {
   let targetInst = bookKeeping.targetInst;
 
@@ -127,7 +131,7 @@ function handleTopLevel(bookKeeping: BookKeepingInstance) {
     bookKeeping.ancestors.push(ancestor);
     ancestor = getClosestInstanceFromNode(root);
   } while (ancestor);
-
+console.log('++++++++++++++++++++++++++++',bookKeeping.ancestors)
   for (let i = 0; i < bookKeeping.ancestors.length; i++) {
     targetInst = bookKeeping.ancestors[i];
     if (bookKeeping.eventSystemFlags === PLUGIN_EVENT_SYSTEM) {
@@ -205,7 +209,7 @@ export function trapEventForResponderEventSystem(
     });
   }
 }
-
+// 给 dom 元素绑定事件 dispatchInteractiveEvent -> dispatchEvent
 function trapEventForPluginEventSystem(
   element: Document | Element | Node,
   topLevelType: DOMTopLevelEventType,
@@ -223,7 +227,7 @@ function trapEventForPluginEventSystem(
     addEventBubbleListener(element, rawEventName, listener);
   }
 }
-
+// 绑定事件触发时（如 onClick），走这里 -> dispatchEvent
 function dispatchInteractiveEvent(topLevelType, eventSystemFlags, nativeEvent) {
   interactiveUpdates(
     dispatchEvent,
@@ -262,10 +266,14 @@ export function dispatchEvent(
     targetInst,
     eventSystemFlags,
   );
-
   try {
     // Event queue being processed in the same cycle allows
     // `preventDefault`.
+    /**
+     * 绑定事件触发时（如 onClick）
+     * 
+     * batchedUpdates 中的主要逻辑是 handleTopLevel
+     */
     batchedUpdates(handleTopLevel, bookKeeping);
   } finally {
     releaseTopLevelCallbackBookKeeping(bookKeeping);

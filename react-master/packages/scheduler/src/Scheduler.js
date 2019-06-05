@@ -182,7 +182,6 @@ function flushImmediateWork() {
 
 function flushWork(didTimeout) {
   // Exit right away if we're currently paused
-
   if (enableSchedulerDebugging && isSchedulerPaused) {
     return;
   }
@@ -191,6 +190,7 @@ function flushWork(didTimeout) {
   const previousDidTimeout = currentDidTimeout;
   currentDidTimeout = didTimeout;
   try {
+    // 判断是否超过执行截止事件
     if (didTimeout) {
       // Flush all the expired callbacks without yielding.
       while (
@@ -221,6 +221,7 @@ function flushWork(didTimeout) {
           if (enableSchedulerDebugging && isSchedulerPaused) {
             break;
           }
+          console.log('本次更新内容',firstCallbackNode.payload)
           flushFirstCallback();
         } while (firstCallbackNode !== null && !shouldYieldToHost());
       }
@@ -317,7 +318,7 @@ function unstable_wrapCallback(callback) {
   };
 }
 
-function unstable_scheduleCallback(callback, deprecated_options) {
+function unstable_scheduleCallback(callback, deprecated_options,payload) {
   var startTime =
     currentEventStartTime !== -1 ? currentEventStartTime : getCurrentTime();
 
@@ -355,6 +356,7 @@ function unstable_scheduleCallback(callback, deprecated_options) {
     expirationTime,
     next: null,
     previous: null,
+    payload:payload
   };
 
   // Insert the new callback into the list, ordered first by expiration, then
@@ -363,6 +365,7 @@ function unstable_scheduleCallback(callback, deprecated_options) {
   if (firstCallbackNode === null) {
     // This is the first callback in the list.
     firstCallbackNode = newNode.next = newNode.previous = newNode;
+    console.log('++++++++',payload)
     ensureHostCallbackIsScheduled();
   } else {
     var next = null;

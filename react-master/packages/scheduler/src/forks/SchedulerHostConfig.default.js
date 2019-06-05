@@ -183,7 +183,6 @@ if (
         return;
       }
     }
-
     if (prevScheduledCallback !== null) {
       isFlushingHostCallback = true;
       try {

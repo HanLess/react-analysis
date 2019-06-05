@@ -180,6 +180,9 @@ export function applyDerivedStateFromProps(
 
 const classComponentUpdater = {
   isMounted,
+  /**
+   * setState 方法走这里
+   */
   enqueueSetState(inst, payload, callback) {
     const fiber = getInstance(inst);
     const currentTime = requestCurrentTime();
@@ -194,13 +197,11 @@ const classComponentUpdater = {
       update.callback = callback;
     }
 
+    // 这三个方法与 render 中的起点 scheduleRootUpdate 一样
     flushPassiveEffects();
     enqueueUpdate(fiber, update);
-    scheduleWork(fiber, expirationTime);
+    scheduleWork(fiber, expirationTime,payload);
   },
-  /**
-   * setState 方法走这里
-   */
   enqueueReplaceState(inst, payload, callback) {
     const fiber = getInstance(inst);
     const currentTime = requestCurrentTime();
@@ -217,7 +218,6 @@ const classComponentUpdater = {
       update.callback = callback;
     }
 
-    // 这三个方法与 render 中的起点 scheduleRootUpdate 一样
     flushPassiveEffects();
     enqueueUpdate(fiber, update);
     scheduleWork(fiber, expirationTime);
