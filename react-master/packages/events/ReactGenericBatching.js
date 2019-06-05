@@ -52,14 +52,26 @@ export function batchedUpdates(fn, bookkeeping) {
   }
 }
 
+/**
+ * 在执行之前已经走了 setBatchingImplementation（下面这个） 方法
+ * _interactiveUpdatesImpl 已经被赋值为 react-reconciler/src/ReactFiberScheduler/interactiveUpdates
+ */
 export function interactiveUpdates(fn, a, b, c) {
   return _interactiveUpdatesImpl(fn, a, b, c);
 }
-
+/**
+ * 与上面的一样 _flushInteractiveUpdatesImpl 已经被赋值
+ */
 export function flushInteractiveUpdates() {
   return _flushInteractiveUpdatesImpl();
 }
 
+/**
+ * 
+ * 这个方法什么时候执行？
+ * 
+ * 查代码可以发现，这个方法被其他模块引入后立即执行
+ */
 export function setBatchingImplementation(
   batchedUpdatesImpl,
   interactiveUpdatesImpl,

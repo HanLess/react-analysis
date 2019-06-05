@@ -583,7 +583,6 @@ function commitPassiveEffects(root: FiberRoot, firstEffect: Fiber): void {
   }
   // Flush any sync work that was scheduled by effects
   if (!isBatchingUpdates && !isRendering) {
-    console.log("点位 1 ------------------------------------------")
     performSyncWork();
   }
 }
@@ -2235,7 +2234,6 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   }
   // TODO: Get rid of Sync and use current time?
   if (expirationTime === Sync) {
-    console.log("点位 2 ------------------------------------------",expirationTime , Sync)
     performSyncWork();
   } else {
     console.log('expirationTime ****************',expirationTime,payload)
@@ -2454,7 +2452,6 @@ function flushRoot(root: FiberRoot, expirationTime: ExpirationTime) {
   nextFlushedExpirationTime = expirationTime;
   performWorkOnRoot(root, expirationTime, false);
   // Flush any sync work that was scheduled by lifecycles
-  console.log("点位 3 ------------------------------------------")
   performSyncWork();
 }
 
@@ -2630,7 +2627,6 @@ function batchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   } finally {
     isBatchingUpdates = previousIsBatchingUpdates;
     if (!isBatchingUpdates && !isRendering) {
-      console.log("点位 4 ------------------------------------------")
       performSyncWork();
     }
   }
@@ -2668,7 +2664,10 @@ function flushSync<A, R>(fn: (a: A) => R, a: A): R {
     performSyncWork();
   }
 }
-
+/**
+ * 
+  绑定事件触发后（如 onClick），走这个方法
+ */
 function interactiveUpdates<A, B, C, R>(
   fn: (A, B, C) => R,
   a: A,
@@ -2695,6 +2694,11 @@ function interactiveUpdates<A, B, C, R>(
   const previousIsBatchingUpdates = isBatchingUpdates;
   isBatchingInteractiveUpdates = true;
   isBatchingUpdates = true;
+  /**
+   * 日志发现 fn(a, b, c) 过程会执行 requestWork，需要重点分析一下 fn
+   * analysising
+   */
+  console.log("interactiveUpdates running next ______________")
   try {
     return fn(a, b, c);
   } finally {
@@ -2726,7 +2730,6 @@ function flushControlled(fn: () => mixed): void {
   } finally {
     isBatchingUpdates = previousIsBatchingUpdates;
     if (!isBatchingUpdates && !isRendering) {
-      console.log("点位 7 ------------------------------------------")
       performSyncWork();
     }
   }

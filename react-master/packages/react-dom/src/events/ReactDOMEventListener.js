@@ -109,7 +109,6 @@ function releaseTopLevelCallbackBookKeeping(
 /**
  * 
     绑定事件（如 onClick）触发的主要逻辑
-    analysising https://juejin.im/post/5bdf0741e51d456b8e1d60be
  */
 function handleTopLevel(bookKeeping: BookKeepingInstance) {
   let targetInst = bookKeeping.targetInst;
@@ -132,7 +131,6 @@ function handleTopLevel(bookKeeping: BookKeepingInstance) {
     bookKeeping.ancestors.push(ancestor);
     ancestor = getClosestInstanceFromNode(root);
   } while (ancestor);
-console.log('++++++++++++++++++++++++++++',bookKeeping.ancestors)
   for (let i = 0; i < bookKeeping.ancestors.length; i++) {
     targetInst = bookKeeping.ancestors[i];
     if (bookKeeping.eventSystemFlags === PLUGIN_EVENT_SYSTEM) {
@@ -211,6 +209,7 @@ export function trapEventForResponderEventSystem(
   }
 }
 // 给 dom 元素绑定事件 dispatchInteractiveEvent -> dispatchEvent
+// 绑定事件
 function trapEventForPluginEventSystem(
   element: Document | Element | Node,
   topLevelType: DOMTopLevelEventType,
@@ -230,6 +229,7 @@ function trapEventForPluginEventSystem(
 }
 // 绑定事件触发时（如 onClick），走这里 -> dispatchEvent
 function dispatchInteractiveEvent(topLevelType, eventSystemFlags, nativeEvent) {
+  // 这个 interactiveUpdates 指向 react-reconciler/src/ReactFiberScheduler/interactiveUpdates
   interactiveUpdates(
     dispatchEvent,
     topLevelType,
