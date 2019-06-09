@@ -2695,10 +2695,8 @@ function interactiveUpdates<A, B, C, R>(
   isBatchingInteractiveUpdates = true;
   isBatchingUpdates = true;
   /**
-   * 日志发现 fn(a, b, c) 过程会执行 requestWork，需要重点分析一下 fn
-   * analysising
+   * 日志发现 fn(a, b, c) 过程会执行 requestWork，需要重点分析一下 fn（dispatchEvent）
    */
-  console.log("interactiveUpdates running next ______________")
   try {
     return fn(a, b, c);
   } finally {

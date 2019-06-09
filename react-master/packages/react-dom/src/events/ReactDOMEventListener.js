@@ -246,8 +246,9 @@ export function dispatchEvent(
   if (!_enabled) {
     return;
   }
-
+  // 获取触发事件的 dom 元素
   const nativeEventTarget = getEventTarget(nativeEvent);
+  // getClosestInstanceFromNode ,获取 nativeEventTarget 对应的 fiberNode
   let targetInst = getClosestInstanceFromNode(nativeEventTarget);
   if (
     targetInst !== null &&

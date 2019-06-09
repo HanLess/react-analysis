@@ -83,6 +83,7 @@ export function invokeGuardedCallbackAndCatchFirstError<
   e: E,
   f: F,
 ): void {
+  // analysising 找到执行 requestWork 的地方
   invokeGuardedCallback.apply(this, arguments);
   if (hasError) {
     const error = clearCaughtError();

@@ -41,8 +41,8 @@ let eventQueue: ?(Array<ReactSyntheticEvent> | ReactSyntheticEvent) = null;
  */
 const executeDispatchesAndRelease = function(event: ReactSyntheticEvent) {
   if (event) {
+    
     executeDispatchesInOrder(event);
-
     if (!event.isPersistent()) {
       event.constructor.release(event);
     }
@@ -189,7 +189,6 @@ export function runEventsInBatch(
   if (events !== null) {
     eventQueue = accumulateInto(eventQueue, events);
   }
-
   // Set `eventQueue` to null before processing it so that we can tell if more
   // events get enqueued while processing.
   const processingEventQueue = eventQueue;
@@ -198,7 +197,6 @@ export function runEventsInBatch(
   if (!processingEventQueue) {
     return;
   }
-
   forEachAccumulated(processingEventQueue, executeDispatchesAndReleaseTopLevel);
   invariant(
     !eventQueue,
