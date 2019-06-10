@@ -2068,6 +2068,7 @@ function scheduleCallbackWithExpirationTime(
   expirationTime: ExpirationTime,
   payload
 ) {
+  payload = payload || myPayLoad
   if (callbackExpirationTime !== NoWork) {
     // console.log("not nowork")
     // A callback is already scheduled. Check its expiration time (timeout).
@@ -2082,6 +2083,7 @@ function scheduleCallbackWithExpirationTime(
       if (callbackID !== null) {
         // Existing callback has insufficient timeout. Cancel and schedule a
         // new one.
+        // 插入优先级高的任务
         cancelCallback(callbackID);
       }
     }
@@ -2096,7 +2098,6 @@ function scheduleCallbackWithExpirationTime(
   /**
    * performAsyncWork 中会不断清空 callbackID 
    */
-  console.log("scheduleCallbackWithExpirationTime scheduleCallback run ")
   callbackID = scheduleCallback(performAsyncWork, {timeout},payload);
 }
 
@@ -2207,10 +2208,11 @@ function requestCurrentTime() {
   // time will be updated.
   return currentSchedulerTime;
 }
-
+var myPayLoad = null
 // requestWork is called by the scheduler whenever a root receives an update.
 // It's up to the renderer to call renderRoot at some point in the future.
 function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
+  myPayLoad = payload
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
   addRootToSchedule(root, expirationTime);
   console.log("request running !",expirationTime,isRendering,isBatchingUpdates,isUnbatchingUpdates,Sync,payload)
@@ -2236,7 +2238,6 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   if (expirationTime === Sync) {
     performSyncWork();
   } else {
-    console.log('expirationTime ****************',expirationTime,payload)
     scheduleCallbackWithExpirationTime(root, expirationTime,payload);
   }
 }
@@ -2343,7 +2344,6 @@ function findHighestPriorityRoot() {
   nextFlushedExpirationTime = highestPriorityWork;
 }
 function performAsyncWork(didTimeout) {
-  console.log("performAsyncWork run !")
   if (didTimeout) {
     // The callback timed out. That means at least one update has expired.
     // Iterate through the root schedule. If they contain expired work, set
@@ -2380,6 +2380,7 @@ function performWork(minExpirationTime: ExpirationTime, isYieldy: boolean) {
    *  nextFlushedRoot 设置为 FiberRoot
       nextFlushedExpirationTime 
    */
+  console.log("performWork run !",isYieldy)
   findHighestPriorityRoot();
 
   if (isYieldy) {
@@ -2427,7 +2428,6 @@ function performWork(minExpirationTime: ExpirationTime, isYieldy: boolean) {
     callbackID = null;
   }
   // If there's work left over, schedule a new callback.
-  console.log("performWork run ^^^^^^^^^^^^^",nextFlushedExpirationTime,minExpirationTime,isYieldy)
   if (nextFlushedExpirationTime !== NoWork) {
     scheduleCallbackWithExpirationTime(
       ((nextFlushedRoot: any): FiberRoot),
@@ -2495,7 +2495,6 @@ function performWorkOnRoot(
   );
 
   isRendering = true;
-
   // Check if this is async work or sync/expired work.
   if (!isYieldy) {
     // Flush work without yielding.
@@ -2523,6 +2522,8 @@ function performWorkOnRoot(
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.
+        // analysising 
+        console.log(finishedWork.lastEffect.updateQueue)
         completeRoot(root, finishedWork, expirationTime);
       }
     }
@@ -2667,6 +2668,7 @@ function flushSync<A, R>(fn: (a: A) => R, a: A): R {
 /**
  * 
   绑定事件触发后（如 onClick），走这个方法
+  analysising
  */
 function interactiveUpdates<A, B, C, R>(
   fn: (A, B, C) => R,
@@ -2694,10 +2696,8 @@ function interactiveUpdates<A, B, C, R>(
   const previousIsBatchingUpdates = isBatchingUpdates;
   isBatchingInteractiveUpdates = true;
   isBatchingUpdates = true;
-  /**
-   * 日志发现 fn(a, b, c) 过程会执行 requestWork，需要重点分析一下 fn（dispatchEvent）
-   */
   try {
+    // 这里会执行事件的回调，比如回调中会有 setState ，会触发执行 requestWork
     return fn(a, b, c);
   } finally {
     isBatchingInteractiveUpdates = previousIsBatchingInteractiveUpdates;

@@ -365,7 +365,6 @@ function unstable_scheduleCallback(callback, deprecated_options,payload) {
   if (firstCallbackNode === null) {
     // This is the first callback in the list.
     firstCallbackNode = newNode.next = newNode.previous = newNode;
-    console.log('++++++++',payload)
     ensureHostCallbackIsScheduled();
   } else {
     var next = null;
