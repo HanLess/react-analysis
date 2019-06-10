@@ -19,3 +19,7 @@ ReactDom.render 过程中 schedule 是一个初始化的作用，初始化整个
 #### ReactDOM.render 执行过程
 
 <img src="https://github.com/HanLess/react-analysis/blob/master/img/ReactDom.render%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BB%8EscheduleRootUpdate%E5%BC%80%E5%A7%8B%EF%BC%89.png" />
+
+#### react 事件触发，执行回调过程
+
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/react%E4%BA%8B%E4%BB%B6%E7%9A%84%E8%A7%A6%E5%8F%91.png" />
