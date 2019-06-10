@@ -64,6 +64,8 @@ function accumulateDirectionalDispatches(inst, phase, event) {
  * each event and perform the traversal for each one. We cannot perform a
  * single traversal for the entire collection of events because each event may
  * have a different target.
+ * 
+ * 处理事件的 冒泡/捕获 
  */
 function accumulateTwoPhaseDispatchesSingle(event) {
   if (event && event.dispatchConfig.phasedRegistrationNames) {

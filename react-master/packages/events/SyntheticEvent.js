@@ -54,10 +54,12 @@ function functionThatReturnsFalse() {
  * normalizing browser quirks. Subclasses do not necessarily have to implement a
  * DOM interface; custom application-specific events can also subclass this.
  *
- * @param {object} dispatchConfig Configuration used to dispatch this event.
- * @param {*} targetInst Marker identifying the event target.
- * @param {object} nativeEvent Native browser event.
- * @param {DOMEventTarget} nativeEventTarget Target node.
+ * 合成事件对象，react 自定义的事件对象
+ * 
+ * @param {object} dispatchConfig 事件的一些信息（事件类型，冒泡/捕捉 等）
+ * @param {*} targetInst 元素的 fiberNode 对象
+ * @param {object} nativeEvent  原生事件对象 （MouseEvent 等）
+ * @param {DOMEventTarget} nativeEventTarget 原生 dom 对象
  */
 function SyntheticEvent(
   dispatchConfig,

@@ -58,10 +58,11 @@ if (__DEV__) {
 }
 
 /**
- * Dispatch the event to the listener.
- * @param {SyntheticEvent} event SyntheticEvent to handle
- * @param {function} listener Application-level callback
- * @param {*} inst Internal component instance
+ * @param {obj} event 合成事件对象
+ * @param {fn} listener 事件回调
+ * @param {obj} inst 组件实例
+ * 
+ * 事件的触发结束
  */
 function executeDispatch(event, listener, inst) {
   const type = event.type || 'unknown-event';

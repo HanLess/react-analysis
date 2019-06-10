@@ -51,6 +51,7 @@ export function invokeGuardedCallback<A, B, C, D, E, F, Context>(
 ): void {
   hasError = false;
   caughtError = null;
+  // __DEV__ 环境下 invokeGuardedCallbackImpl 被赋值为 invokeGuardedCallbackDev 
   invokeGuardedCallbackImpl.apply(reporter, arguments);
 }
 
@@ -83,7 +84,6 @@ export function invokeGuardedCallbackAndCatchFirstError<
   e: E,
   f: F,
 ): void {
-  // analysising 找到执行 requestWork 的地方
   invokeGuardedCallback.apply(this, arguments);
   if (hasError) {
     const error = clearCaughtError();

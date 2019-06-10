@@ -452,6 +452,8 @@ const ReactTestUtils = {
  * - `ReactTestUtils.Simulate.mouseMove(Element)`
  * - `ReactTestUtils.Simulate.change(Element)`
  * - ... (All keys from event plugin `eventTypes` objects)
+ * 
+ * 事件模拟器
  */
 function makeSimulator(eventType) {
   return function(domNode, eventData) {
@@ -504,6 +506,7 @@ function makeSimulator(eventType) {
   };
 }
 
+// 创建模拟器
 function buildSimulators() {
   ReactTestUtils.Simulate = {};
 

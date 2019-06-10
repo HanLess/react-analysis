@@ -38,10 +38,12 @@ let eventQueue: ?(Array<ReactSyntheticEvent> | ReactSyntheticEvent) = null;
  *
  * @param {?object} event Synthetic event to be dispatched.
  * @private
+ * 
+ *  执行回调
  */
 const executeDispatchesAndRelease = function(event: ReactSyntheticEvent) {
   if (event) {
-    
+    // 执行回调
     executeDispatchesInOrder(event);
     if (!event.isPersistent()) {
       event.constructor.release(event);
@@ -157,6 +159,8 @@ export function getListener(inst: Fiber, registrationName: string) {
  *
  * @return {*} An accumulation of synthetic events.
  * @internal
+ * 
+ * 提取绑定的事件
  */
 function extractEvents(
   topLevelType: TopLevelType,
@@ -167,8 +171,13 @@ function extractEvents(
   let events = null;
   for (let i = 0; i < plugins.length; i++) {
     // Not every plugin in the ordering may be loaded at runtime.
+    /**
+     * possiblePlugin 是 SimpleEventPlugin 对象
+     */
     const possiblePlugin: PluginModule<AnyNativeEvent> = plugins[i];
+
     if (possiblePlugin) {
+      // 事件触发节点二：这里合成事件
       const extractedEvents = possiblePlugin.extractEvents(
         topLevelType,
         targetInst,
@@ -197,6 +206,7 @@ export function runEventsInBatch(
   if (!processingEventQueue) {
     return;
   }
+  // 执行回调
   forEachAccumulated(processingEventQueue, executeDispatchesAndReleaseTopLevel);
   invariant(
     !eventQueue,
@@ -206,18 +216,24 @@ export function runEventsInBatch(
   // This would be a good time to rethrow if any of the event handlers threw.
   rethrowCaughtError();
 }
-
+/**
+ * 
+ * 一：合成、提取事件
+ * 二：执行事件（执行回调）
+ */
 export function runExtractedEventsInBatch(
   topLevelType: TopLevelType,
   targetInst: null | Fiber,
   nativeEvent: AnyNativeEvent,
   nativeEventTarget: EventTarget,
 ) {
+  // 合成、提取事件
   const events = extractEvents(
     topLevelType,
     targetInst,
     nativeEvent,
     nativeEventTarget,
   );
+  // 执行回调
   runEventsInBatch(events);
 }

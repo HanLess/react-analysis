@@ -173,7 +173,6 @@ if (__DEV__) {
       // Attach our event handlers
       window.addEventListener('error', handleWindowError);
       fakeNode.addEventListener(evtType, callCallback, false);
-
       // Synchronously dispatch our fake event. If the user-provided function
       // errors, it will trigger our global error handler.
       evt.initEvent(evtType, false, false);
@@ -182,7 +181,6 @@ if (__DEV__) {
       if (windowEventDescriptor) {
         Object.defineProperty(window, 'event', windowEventDescriptor);
       }
-
       if (didError) {
         if (!didSetError) {
           // The callback errored, but the error event never fired.

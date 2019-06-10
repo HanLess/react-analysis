@@ -210,7 +210,7 @@ const SimpleEventPlugin: PluginModule<MouseEvent> & {
     const config = topLevelEventsToDispatchConfig[topLevelType];
     return config !== undefined && config.isInteractive === true;
   },
-
+  // 事件合成
   extractEvents: function(
     topLevelType: TopLevelType,
     targetInst: null | Fiber,
@@ -319,13 +319,16 @@ const SimpleEventPlugin: PluginModule<MouseEvent> & {
         EventConstructor = SyntheticEvent;
         break;
     }
+    // 获取合成事件
     const event = EventConstructor.getPooled(
       dispatchConfig,
       targetInst,
       nativeEvent,
       nativeEventTarget,
     );
+    //  处理事件的 冒泡/捕获 
     accumulateTwoPhaseDispatches(event);
+    // 合成事件结束
     return event;
   },
 };
