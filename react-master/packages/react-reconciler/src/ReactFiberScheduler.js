@@ -2211,6 +2211,13 @@ function requestCurrentTime() {
 var myPayLoad = null
 // requestWork is called by the scheduler whenever a root receives an update.
 // It's up to the renderer to call renderRoot at some point in the future.
+/*
+ analysising 
+
+ 目前进度：已经明确插入任务的流程，但插入的任务结束后，如何恢复上一个任务
+  
+ 需要明确 nextEffect firstEffect lastEffect 存了什么
+*/
 function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   myPayLoad = payload
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
@@ -2504,6 +2511,7 @@ function performWorkOnRoot(
 
     let finishedWork = root.finishedWork;
     if (finishedWork !== null) {
+      console.log("complete 点位 1 ----------------------------------")
       // This root is already complete. We can commit it.
       completeRoot(root, finishedWork, expirationTime);
     } else {
@@ -2518,12 +2526,11 @@ function performWorkOnRoot(
       }
       // root 为 FiberRoot
       renderRoot(root, isYieldy);
-      // 这时 root.finishedWork 就是 root.current，一个完整的 fiber 树
+      // render阶段：这时 root.finishedWork 就是 root.current，一个完整的 fiber 树
       finishedWork = root.finishedWork;
       if (finishedWork !== null) {
         // We've completed the root. Commit it.
-        // analysising 
-        console.log(finishedWork.lastEffect.updateQueue)
+        console.log('complete 点位 2 ----------------------------------',finishedWork)
         completeRoot(root, finishedWork, expirationTime);
       }
     }
@@ -2531,6 +2538,7 @@ function performWorkOnRoot(
     // Flush async work.
     let finishedWork = root.finishedWork;
     if (finishedWork !== null) {
+      console.log("complete 点位 3 ----------------------------------")
       // This root is already complete. We can commit it.
       completeRoot(root, finishedWork, expirationTime);
     } else {
@@ -2549,6 +2557,7 @@ function performWorkOnRoot(
         // We've completed the root. Check the if we should yield one more time
         // before committing.
         if (!shouldYield()) {
+          console.log("complete 点位 4 ----------------------------------",finishedWork)
           // Still time left. Commit the root.
           completeRoot(root, finishedWork, expirationTime);
         } else {
@@ -2668,7 +2677,6 @@ function flushSync<A, R>(fn: (a: A) => R, a: A): R {
 /**
  * 
   绑定事件触发后（如 onClick），走这个方法
-  analysising
  */
 function interactiveUpdates<A, B, C, R>(
   fn: (A, B, C) => R,
