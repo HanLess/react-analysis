@@ -2220,13 +2220,7 @@ function requestCurrentTime() {
 var myPayLoad = null
 // requestWork is called by the scheduler whenever a root receives an update.
 // It's up to the renderer to call renderRoot at some point in the future.
-/*
- analysising 
 
- 目前进度：已经明确插入任务的流程，但插入的任务结束后，如何恢复上一个任务
-  
- 需要明确 nextEffect firstEffect lastEffect 存了什么
-*/
 function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   myPayLoad = payload
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
