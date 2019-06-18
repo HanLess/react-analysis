@@ -14,6 +14,8 @@
 工作树（workInProgress）的 firstEffect 保存了已完成的 任务二 的更新内容（onee），且 nextEffect 指向 lastEffect ；
 lastEffect 分别保存了 任务一 的更新内容（ Array(20000) ）和初始状态（ Array(200) ）
 
+#### 修改 effect 的方法是 completeUnitOfWork
+
 #### 综述
 
 全局任务树通过 lastEffect 来保存被打断的任务，通过 nextEffect 链接各个节点的执行任务
