@@ -1987,7 +1987,6 @@ function beginWork(
   renderExpirationTime: ExpirationTime,
 ): Fiber | null {
   const updateExpirationTime = workInProgress.expirationTime;
-
   if (current !== null) {
     const oldProps = current.memoizedProps;
     const newProps = workInProgress.pendingProps;

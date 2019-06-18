@@ -966,6 +966,11 @@ function resetChildExpirationTime(
   workInProgress.childExpirationTime = newChildExpirationTime;
 }
 
+/**
+ * 这里更新了各个 fiber 节点的 firstEffect lastEffect
+* 
+* 包括 root.current 与 render 阶段返回的 finishWork
+ */
 function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
   // Attempt to complete the current unit of work, then move to the
   // next sibling. If there are no more siblings, return to the
@@ -1020,12 +1025,16 @@ function completeUnitOfWork(workInProgress: Fiber): Fiber | null {
       if (__DEV__) {
         resetCurrentFiber();
       }
-
       if (nextUnitOfWork !== null) {
         // Completing this fiber spawned new work. Work on that next.
         return nextUnitOfWork;
       }
 
+      /**
+       * 这里更新了各个 fiber 节点的 firstEffect lastEffect
+       * 
+       * 包括 root.current 与 render 阶段返回的 finishWork
+       */
       if (
         returnFiber !== null &&
         // Do not append effects to parents if a sibling failed to complete
@@ -2524,6 +2533,7 @@ function performWorkOnRoot(
         // $FlowFixMe Complains noTimeout is not a TimeoutID, despite the check above
         cancelTimeout(timeoutHandle);
       }
+      console.log('before renderRoot ========================', root.current)
       // root 为 FiberRoot
       renderRoot(root, isYieldy);
       // render阶段：这时 root.finishedWork 就是 root.current，一个完整的 fiber 树
