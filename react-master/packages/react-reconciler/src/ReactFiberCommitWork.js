@@ -223,7 +223,7 @@ function safelyCallDestroy(current, destroy) {
     }
   }
 }
-
+// react 生命周期 ：getSnapshotBeforeUpdate
 function commitBeforeMutationLifeCycles(
   current: Fiber | null,
   finishedWork: Fiber,
@@ -383,6 +383,7 @@ export function commitPassiveHookEffects(finishedWork: Fiber): void {
   commitHookEffectList(NoHookEffect, MountPassive, finishedWork);
 }
 
+// react 生命周期 ：componentDidMount | componentDidUpdate | 
 function commitLifeCycles(
   finishedRoot: FiberRoot,
   current: Fiber | null,
