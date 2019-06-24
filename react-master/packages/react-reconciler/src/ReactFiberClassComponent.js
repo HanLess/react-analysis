@@ -722,6 +722,10 @@ function callComponentWillReceiveProps(
 }
 
 // Invokes the mount life-cycles on a previously never rendered instance.
+/* 
+  执行 挂载阶段 的生命周期方法（没有被初始化过的组件），mount 生命周期
+
+*/
 function mountClassInstance(
   workInProgress: Fiber,
   ctor: any,
@@ -729,6 +733,7 @@ function mountClassInstance(
   renderExpirationTime: ExpirationTime,
 ): void {
   if (__DEV__) {
+    // 检查调用是否符合规范
     checkClassInstance(workInProgress, ctor, newProps);
   }
 
@@ -977,6 +982,10 @@ function resumeMountClassInstance(
 }
 
 // Invokes the update life-cycles and returns false if it shouldn't rerender.
+/**
+ * 
+ * 执行 update 阶段的生命周期方法
+ */
 function updateClassInstance(
   current: Fiber,
   workInProgress: Fiber,

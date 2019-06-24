@@ -384,6 +384,8 @@ export function commitPassiveHookEffects(finishedWork: Fiber): void {
 }
 
 // react 生命周期 ：componentDidMount | componentDidUpdate | 
+// componentDidMount 生命周期
+// componentDidUpdate 生命周期
 function commitLifeCycles(
   finishedRoot: FiberRoot,
   current: Fiber | null,

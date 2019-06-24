@@ -465,6 +465,10 @@ function commitAllHostEffects() {
   }
 }
 
+
+/**
+ * 在 update 阶段命中，执行 getSnapshotBeforeUpdate 生命周期
+ */
 function commitBeforeMutationLifecycles() {
   while (nextEffect !== null) {
     if (__DEV__) {
@@ -473,6 +477,7 @@ function commitBeforeMutationLifecycles() {
 
     const effectTag = nextEffect.effectTag;
     // 在 ReactDOM.render 阶段没有命中
+    // 在 update 阶段命中，执行 getSnapshotBeforeUpdate 生命周期
     if (effectTag & Snapshot) {
       recordEffect();
       const current = nextEffect.alternate;
@@ -508,6 +513,7 @@ function commitAllLifeCycles(
     if (effectTag & (Update | Callback)) {
       recordEffect();
       const current = nextEffect.alternate;
+      // 执行 componentDidMount | componentDidUpdate 生命周期函数
       commitLifeCycles(
         finishedRoot,
         current,
@@ -690,6 +696,7 @@ function commitRoot(root: FiberRoot, finishedWork: Fiber): void {
       }
     } else {
       try {
+        // 这里执行了 getSnapshotBeforeUpdate 生命周期方法
         commitBeforeMutationLifecycles();
       } catch (e) {
         didError = true;

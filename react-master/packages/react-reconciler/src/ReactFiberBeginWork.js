@@ -633,6 +633,19 @@ function updateFunctionComponent(
   return workInProgress.child;
 }
 
+/* 
+执行各种生命周期
+ 
+这里执行生命周期方法：
+
+mount 阶段：constructor , getDerivedStateFromProps 
+
+update 阶段：getDerivedStateFromProps , shouldComponentUpdate
+
+在 render 之后的生命周期方法，会通过 effectTag 来记录应该执行哪一个生命周期方法
+
+然后在方法的最后阶段通过 finishClassComponent 来执行 render 生命周期方法
+*/
 function updateClassComponent(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -683,12 +696,14 @@ function updateClassComponent(
       workInProgress.effectTag |= Placement;
     }
     // In the initial pass we might need to construct the instance.
+    // 创建了 component 实例，执行了 constructor 生命周期方法
     constructClassInstance(
       workInProgress,
       Component,
       nextProps,
       renderExpirationTime,
     );
+    // 这里执行了 mount 阶段生命周期方法，getDerivedStateFromProps 用以替代 componentWillMount
     mountClassInstance(
       workInProgress,
       Component,
@@ -705,6 +720,7 @@ function updateClassComponent(
       renderExpirationTime,
     );
   } else {
+    // 这里执行了 update 阶段的生命周期方法
     shouldUpdate = updateClassInstance(
       current,
       workInProgress,
@@ -713,6 +729,7 @@ function updateClassComponent(
       renderExpirationTime,
     );
   }
+  // 这里执行了 render 生命周期方法
   const nextUnitOfWork = finishClassComponent(
     current,
     workInProgress,
@@ -1980,7 +1997,13 @@ function bailoutOnAlreadyFinishedWork(
     return workInProgress.child;
   }
 }
-
+/**
+ * 
+ * 根据不同的节点 tag ，创建 fiber 树
+ * 
+ * 执行生命周期方法（render 之前，包括 render）
+ * 
+ */
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -2130,15 +2153,15 @@ function beginWork(
         renderExpirationTime,
       );
     }
-    // 创建组件的 fiber 对象（同时设置 fiber.stateNode ）
+    // 创建 react 组件的 fiber 对象（同时设置 fiber.stateNode ）
+    // 执行了各种生命周期方法
     case ClassComponent: {
-      const Component = workInProgress.type;
-      const unresolvedProps = workInProgress.pendingProps;
+      const Component = workInProgress.type;  // react 组件类
+      const unresolvedProps = workInProgress.pendingProps;  // 传进来的 props
       const resolvedProps =
-        workInProgress.elementType === Component
+        workInProgress.elementType === Component  // workInProgress.elementType 也是组件类
           ? unresolvedProps
           : resolveDefaultProps(Component, unresolvedProps);
-      
       return updateClassComponent(
         current,
         workInProgress,
