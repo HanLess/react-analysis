@@ -703,7 +703,10 @@ function updateClassComponent(
       nextProps,
       renderExpirationTime,
     );
-    // 这里执行了 mount 阶段生命周期方法，getDerivedStateFromProps 用以替代 componentWillMount
+    /* 
+    这里执行了 mount 阶段生命 getDerivedStateFromProps 周期方法
+    用以替代 componentWillMount，componentWillReceiveProps ，componentWillUpdate
+    */
     mountClassInstance(
       workInProgress,
       Component,
@@ -720,7 +723,7 @@ function updateClassComponent(
       renderExpirationTime,
     );
   } else {
-    // 这里执行了 update 阶段的生命周期方法
+    // 这里执行了 update 阶段的生命周期方法 
     shouldUpdate = updateClassInstance(
       current,
       workInProgress,
