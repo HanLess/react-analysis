@@ -1,14 +1,39 @@
 <img src="https://github.com/HanLess/react-analysis/blob/master/img/redux%26react-redux.png" />
 
-redux 要求 reducer 是一个纯函数，不能修改原来的 state，只能返回一个新的 state，所以在设计 state 结构的时候，一定要扁平化，切忌多层结构
+## reducer
+
+要求 reducer 是一个纯函数，不能修改原来的 state，只能返回一个新的 state，所以在设计 state 结构的时候，一定要扁平化，切忌多层结构
 
 否则更新一个叶子节点时，就要更新最外层的父节点。
+
+dispatch 核心逻辑
+
+```
+currentState = currentReducer(currentState, action)
+```
+
+currentReducer 就是 createStore 传入的 reducer，currentState 就是 state
 
 ## redux
 
 #### combineReducers
 
 将各个reducer模块整合，最后输出，用于 createStore(reducers)
+
+核心逻辑：
+
+```
+for (let i = 0; i < finalReducerKeys.length; i++) {
+  const key = finalReducerKeys[i]
+  const reducer = finalReducers[key]
+  const previousStateForKey = state[key]
+  const nextStateForKey = reducer(previousStateForKey, action)
+  ...
+  nextState[key] = nextStateForKey
+}
+```
+
+本质与普通的 reducer一样，但是在每次 dispatch 的时候，会遍历一遍 reducerKeys，然后更新对应的 reducerKeys 的 state，简单粗暴。
 
 #### applyMiddleware
 
