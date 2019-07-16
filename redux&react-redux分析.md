@@ -1,5 +1,9 @@
 <img src="https://github.com/HanLess/react-analysis/blob/master/img/redux%26react-redux.png" />
 
+redux 要求 reducer 是一个纯函数，不能修改原来的 state，只能返回一个新的 state，所以在设计 state 结构的时候，一定要扁平化，切忌多层结构
+
+否则更新一个叶子节点时，就要更新最外层的父节点。
+
 ## redux
 
 #### combineReducers
