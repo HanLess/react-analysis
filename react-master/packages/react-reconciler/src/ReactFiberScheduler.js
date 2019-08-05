@@ -1671,9 +1671,11 @@ function computeExpirationForFiber(currentTime: ExpirationTime, fiber: Fiber) {
     if (fiber.mode & ConcurrentMode) {
       if (isBatchingInteractiveUpdates) {
         // This is an interactive update
+        // 交互事件（onclick ... ）
         expirationTime = computeInteractiveExpiration(currentTime);
       } else {
         // This is an async update
+        // 异步更新
         expirationTime = computeAsyncExpiration(currentTime);
       }
       // If we're in the middle of rendering a tree, do not update at the same
