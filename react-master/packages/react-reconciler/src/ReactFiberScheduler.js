@@ -2249,7 +2249,6 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
 
    这里正常情况下会被 return 掉
   */
- console.log('set state ',isBatchingUpdates,isUnbatchingUpdates)
   if (isBatchingUpdates) {
     // Flush work at the end of the batch.
     if (isUnbatchingUpdates) {
