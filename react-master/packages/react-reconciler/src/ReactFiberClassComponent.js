@@ -196,7 +196,6 @@ const classComponentUpdater = {
       }
       update.callback = callback;
     }
-
     // 这三个方法与 render 中的起点 scheduleRootUpdate 一样
     flushPassiveEffects();
     enqueueUpdate(fiber, update);

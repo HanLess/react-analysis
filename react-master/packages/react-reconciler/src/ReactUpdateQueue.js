@@ -221,7 +221,7 @@ function appendUpdateToQueue<State>(
   update 和 updateQueue：
   （1）用于记录组件状态的改变，记录改变的方式和内容
   （2）存放在 updateQueue，存放多个 update 用来计算出最终改变的结果
-  （3）多个 update 可以同时存在，setState 三次会创建三个update，放到 updateQueue 里
+  （3）多个 update 可以同时存在，连续 setState 三次会创建三个update，放到 updateQueue 里
  */
 
 export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {

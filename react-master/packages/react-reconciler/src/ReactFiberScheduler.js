@@ -2234,14 +2234,22 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
   myPayLoad = payload
   // 把 root 加入到执行队列中，即更新 root 的 expirationTime
   addRootToSchedule(root, expirationTime);
-  console.log("request running !",expirationTime,isRendering,isBatchingUpdates,isUnbatchingUpdates,Sync,payload)
   // 在 commitRoot 阶段，isRendering 为 true
   if (isRendering) {
     // Prevent reentrancy. Remaining work will be scheduled at the end of
     // the currently rendering batch.
     return;
   }
+  /*
+    在 setState 流程中
 
+   如果是 合成事件 触发的本次更新，isBatchingUpdates 会被置为 true
+
+   batch ：批量
+
+   这里正常情况下会被 return 掉
+  */
+ console.log('set state ',isBatchingUpdates,isUnbatchingUpdates)
   if (isBatchingUpdates) {
     // Flush work at the end of the batch.
     if (isUnbatchingUpdates) {
@@ -2254,6 +2262,7 @@ function requestWork(root: FiberRoot, expirationTime: ExpirationTime,payload) {
     return;
   }
   // TODO: Get rid of Sync and use current time?
+
   if (expirationTime === Sync) {
     performSyncWork();
   } else {

@@ -56,115 +56,13 @@
     </style>
   </head>
   <body>
-    <div id="root2"></div>
     <div id="root"></div>
     <script src="../../build/node_modules/react/umd/react.development.js"></script>
     <script src="../../build/node_modules/react-dom/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.js"></script>
     <script type="text/babel">
-    /*
-      analysising 
-
-      初始化、setState 过程都已经完成，之后看官方文档，配合源码
-    
-    */
-      // One
-    class One extends React.Component{
-        constructor (option) {
-            super(option);
-            this.state = {
-                name : 'one',
-                age : 0,
-                items : []
-            };
-        }
-
-        initItems = (num) => {
-            let len = num
-            let arr = []
-            for (let i = 0; i < len; i ++) {
-                let obj = {}
-                obj['key'] = parseInt(Math.random() * len)
-                arr.push(obj)
-            }
-            return arr
-        }
-
-        componentDidMount() {
-            let arr = this.initItems(200)
-            let start = Date.now()
-            this.setState({
-                items : arr
-            },function(){
-                let end = Date.now()
-                console.log("init 时长 ：" + (end - start))
-            })
-        }
-
-        changeItem = () => {
-            let len = this.state.items.length == 200 ? 20000 : 200
-            var arr = this.initItems(len);
-            let start = Date.now()
-              this.setState({
-                  items : arr
-              },function(){
-                  let end = Date.now()
-                  console.log('change 时长 ：' + (end - start))
-              })
-              setTimeout(() => {
-                this.changeName()
-              }, 200);
-        }
-
-        changeItemAgain = () => {
-            let len = this.state.items.length == 200 ? 30000 : 200
-            var arr = this.initItems(len);
-            let start = Date.now()
-            for(let i = 0;i < len;i ++){
-                let now = this.state.items;
-                now[i] = arr[i];
-                this.setState({
-                    items : now
-                })
-            }
-        }
-
-        changeName = () => {
-            let name = this.state.name
-            let start = Date.now()
-            ReactDOM.flushSync(() => {
-                this.setState({
-                    name : name + 'e'
-                },function(){
-                    let end = Date.now()
-                console.log('change name 时长 ：' + (end - start))
-                })
-            })
-        }
-
-        render () {
-            return (
-                <div>
-                    <h1 onClick={this.changeName}>one name is {this.state.name}</h1>
-                    <p onClick={this.changeItem}>change item</p>
-                    <p onClick={this.changeItemAgain}>change item again</p>
-                    {
-                        this.state.items.map((val,index) => {
-                            return (<div><div>{val['key']}</div></div>)
-                        })
-                    }
-                </div>
-            )
-        }
-    }
-
-
     // App
     class App extends React.Component {
-
-      componentDidMount(){
-        
-      }
 
       constructor (options) {
         super(options)
@@ -173,25 +71,17 @@
         }
       }
 
-      remind = () => {
-        console.log("click by react !")
-      }
-
-      click_img = () => {
-        console.log("click img ")
-      }
-
       changeName = () => {
-        let name = this.state.name
-        let start = Date.now()
-        ReactDOM.flushSync(() => {
-            this.setState({
-                name : name + 'e'
-            },function(){
-                let end = Date.now()
-            console.log('change name 时长 ：' + (end - start))
-            })
-        })
+          var start = Date.now()
+          console.log('start change ' , start)
+          this.setState({
+            name: ' change name '
+          })
+          this.setState({
+            name: ' change name alalalal'
+          })
+          var end = Date.now()
+          console.log('end change ' , end)
       }
 
       render() {
@@ -199,7 +89,6 @@
           <div className="App">
             <header className="App-header">
               <h1 onClick={this.changeName}>app name is {this.state.name}</h1>
-              <One />
             </header>
           </div>
         );
@@ -207,34 +96,7 @@
     }
       
 
-    var root = ReactDOM.unstable_createRoot(document.getElementById('root'));
-    root.render(<App />)
-    // ReactDOM.render(<App />,document.getElementById('root'));
-
-
-    class Two extends React.Component {
-      constructor(option){
-        super(option)
-        this.state = {
-          name : "Two"
-        }
-      }
-
-      changeName = () => {
-        let name = this.state.name + 'o'
-        this.setState({
-          name : name
-        })
-      }
-
-      render () {
-        return (
-          <h1 onClick={this.changeName}>{this.state.name}</h1>
-        )
-      }
-    }
-
-    // var root2 = ReactDOM.render(<Two />,document.getElementById('root2'))
+    ReactDOM.render(<App />,document.getElementById('root'));
     </script> 
   </body>
 </html>
