@@ -69,6 +69,8 @@ if (!isBatchingUpdates && !isRendering) {
 
 执行 performSyncWork 方法，沿着 react 渲染逻辑往下走，最终更新视图
 
+### 结论：合成事件中，回调先执行，然后执行 finally 中的逻辑，在回调中 setState 只用来收集 update，既不会更新数据（state），也不会渲染页面，更新数据 & 渲染页面都在 finally 中执行
+
 
 #### setState 执行
 
