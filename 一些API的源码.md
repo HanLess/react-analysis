@@ -1,5 +1,9 @@
 #### Context
 
+可以发现 context 是一个 $$typeof 是 REACT_CONTEXT_TYPE react 组件
+
+用 context 可以理解为创建一个全局组件，通过 props 专门用来传递数据
+
 ```
 createContext<T>(
   defaultValue: T,
