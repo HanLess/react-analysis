@@ -1,4 +1,4 @@
-#### Context
+### Context
 
 可以发现 context 是一个 $$typeof 是 REACT_CONTEXT_TYPE react 组件
 
@@ -32,3 +32,18 @@ createContext<T>(
 }
 ```
 
+### ref
+
+用 current 指向某个组件或 dom，可以随时读取，ref 属性会被 JSX 处理
+
+```
+createRef(): RefObject {
+  const refObject = {
+    current: null,
+  };
+  if (__DEV__) {
+    Object.seal(refObject);
+  }
+  return refObject;
+}
+```
