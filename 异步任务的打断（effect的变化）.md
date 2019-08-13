@@ -19,3 +19,51 @@ lastEffect 分别保存了 任务一 的更新内容（ Array(20000) ）和初�
 #### 综述
 
 全局任务树通过 lastEffect 来保存被打断的任务，通过 nextEffect 链接各个节点的执行任务
+
+#### 代码
+
+```
+changeName = () => {
+    let name = this.state.name
+    let start = Date.now()
+    ReactDOM.flushSync(() => {
+        this.setState({
+            name : name + 'e'
+        },function(){
+            let end = Date.now()
+        console.log('change name 时长 ：' + (end - start))
+        })
+    })
+}
+
+initItems = (num) => {
+    let len = num
+    let arr = []
+    for (let i = 0; i < len; i ++) {
+        let obj = {}
+        obj['key'] = parseInt(Math.random() * len)
+        arr.push(obj)
+    }
+    return arr
+}
+
+changeItem = () => {
+    let len = this.state.items.length == 200 ? 20000 : 200
+    var arr = this.initItems(len);
+    let start = Date.now()
+    this.setState({
+        items : arr
+    },function(){
+        let end = Date.now()
+        console.log('change 时长 ：' + (end - start))
+    })
+    setTimeout(() => {
+      this.changeName()
+    }, 200);
+}
+
+
+
+var root = ReactDOM.unstable_createRoot(document.getElementById('root'));
+root.render(<App />)
+```
