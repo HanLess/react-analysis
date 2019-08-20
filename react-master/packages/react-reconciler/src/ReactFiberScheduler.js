@@ -1251,6 +1251,11 @@ function workLoop(isYieldy) {
     }
   } else {
     // Flush asynchronous work until there's a higher priority event
+    /**
+     * 在 concurrent 模式下，一个任务在这里被分片
+     * 
+     * 判断继续执行本任务的条件：当前还有空闲时间 && 下一个节点不为空
+     */
     while (nextUnitOfWork !== null && !shouldYield()) {
       nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
     }

@@ -67,36 +67,76 @@
       constructor (options) {
         super(options)
         this.state = {
-          name : "app"
+          name : "app",
+          items : []
         }
       }
 
       changeName = () => {
-          var start = Date.now()
-          console.log('start change ' , start)
-          this.setState({
-            name: ' change name '
+          let name = this.state.name
+          let start = Date.now()
+          ReactDOM.flushSync(() => {
+              this.setState({
+                  name : name + 'e'
+              },function(){
+                  let end = Date.now()
+                console.log('change name 时长 ：' + (end - start))
+              })
           })
+      }
+
+      initItems = (num) => {
+          let len = num
+          let arr = []
+          for (let i = 0; i < len; i ++) {
+              let obj = {}
+              obj['key'] = parseInt(Math.random() * len)
+              arr.push(obj)
+          }
+          return arr
+      }
+
+      changeItem = () => {
+          let len = this.state.items.length == 200 ? 20000 : 200
+          var arr = this.initItems(len);
+          let start = Date.now()
           this.setState({
-            name: ' change name alalalal'
+              items : arr
+          },function(){
+              let end = Date.now()
+              console.log('change 时长 ：' + (end - start))
           })
-          var end = Date.now()
-          console.log('end change ' , end)
+          setTimeout(() => {
+            this.changeName()
+          }, 200);
+      }
+
+      componentDidMount () {
+        let items = this.initItems(200)
+        this.setState({
+          items:items
+        })
       }
 
       render() {
         return (
           <div className="App">
-            <header className="App-header">
-              <h1 onClick={this.changeName}>app name is {this.state.name}</h1>
-            </header>
+            <h1 onClick={this.changeName}>app name is {this.state.name}</h1>
+            <h1 onClick={this.changeItem}>change items</h1>
+            {
+              this.state.items.map((val,index) => {
+                return (<div key = {index}>{val.key}</div>)
+              })
+            }
+            
           </div>
         );
       }
     }
       
 
-    ReactDOM.render(<App />,document.getElementById('root'));
+    var root = ReactDOM.unstable_createRoot(document.getElementById('root'));
+    root.render(<App />)
     </script> 
   </body>
 </html>
