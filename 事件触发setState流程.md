@@ -35,7 +35,7 @@ if (isBatchingUpdates) {
 }
 ```
 
-由合成事件走到这里的逻辑，isBatchingUpdates 为 true，但 isUnbatchingUpdates 为 false，即 setState 流程终止，那 setState 做了什么？查看 enqueueSetState 源码如下
+由 <a href="https://github.com/HanLess/react-analysis/blob/master/react%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6.md">合成事件</a> 走到这里的逻辑，isBatchingUpdates 为 true，但 isUnbatchingUpdates 为 false，即 setState 流程终止，那 setState 做了什么？查看 enqueueSetState 源码如下
 
 ```
 const fiber = getInstance(inst);
@@ -68,6 +68,8 @@ if (!isBatchingUpdates && !isRendering) {
 ```
 
 执行 performSyncWork 方法，沿着 react 渲染逻辑往下走，最终更新视图
+
+### 结论：合成事件中，回调先执行，然后执行 finally 中的逻辑，在回调中 setState 只用来收集 update，既不会更新数据（state），也不会渲染页面，更新数据 & 渲染页面都在 finally 中执行
 
 
 #### setState 执行

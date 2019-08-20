@@ -51,6 +51,12 @@ Link 跳转其实就是实现了 pushState / replaceState ，从而触发 locati
 
 通过源码可以发现，当路由变化的时候，会触发 this.setState({ location })，这本质是一个 setState 改变数据 -> 触发视图变化的逻辑
 
+#### 监听
+
+hash 模式：history.listen 通过 hashchange 事件监听 hash 模式的路由变化
+
+browser（vue 中称为 history）模式：只能通过 popstate 事件来监听路由的前进 / 后退。如果通过 <link> 或者 history 跳转，会阻止 a 标签的默认行为（preventDefault）,用 pushState / replaceState 来实现路由变化，触发视图变化；如果直接用 a 标签，或者 location.href 控制跳转，页面会刷新，然后根据路由信息展示相关组建
+
 
 #### 总结
 
