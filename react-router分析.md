@@ -63,3 +63,6 @@ browser（vue 中称为 history）模式：只能通过 popstate 事件来监听
 vue 与 react 的 router 功能，本质都是数据驱动视图变化，不过二者数据绑定的实现方式不同，所有路由的实现方式也就不同，但方向完全一致
 
        
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/route%E7%BB%93%E6%9E%84.png" />       
+       
+       
