@@ -145,6 +145,12 @@ if (
   let previousFrameTime = 33;
   let activeFrameTime = 33;
 
+
+  /**
+   * 判断是否要停止一个分片任务
+   * 
+   * frameDeadline 可以理解为一个分片任务的执行截止时间
+   */
   shouldYieldToHost = function() {
     return frameDeadline <= getCurrentTime();
   };

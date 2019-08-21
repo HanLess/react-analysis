@@ -1252,9 +1252,13 @@ function workLoop(isYieldy) {
   } else {
     // Flush asynchronous work until there's a higher priority event
     /**
-     * 在 concurrent 模式下，一个任务在这里被分片
+     * 在 concurrent 模式下，一个任务在这里被分片，fiber 树会按片遍历，每次遍历一部分
      * 
      * 判断继续执行本任务的条件：当前还有空闲时间 && 下一个节点不为空
+     * 
+     * shouldYield() 为 true 的时候，一个分片任务结束
+     * 
+     * shouldYield()的关键点是：这个分片任务的截止执行时间
      */
     while (nextUnitOfWork !== null && !shouldYield()) {
       nextUnitOfWork = performUnitOfWork(nextUnitOfWork);

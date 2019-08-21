@@ -440,6 +440,15 @@ function unstable_getCurrentPriorityLevel() {
 }
 
 function unstable_shouldYield() {
+  /**
+   * shouldYieldToHost() 决定了返回 true 还是 false
+   * 
+   * shouldYieldToHost() 为 false，返回 false
+   * 
+   * shouldYieldToHost() 为 true，返回 true
+   * 
+   * 也就是说，在一个分片任务中执行 workLoop，shouldYieldToHost() 为 true 会导致这个分片任务停止
+   */
   return (
     !currentDidTimeout &&
     ((firstCallbackNode !== null &&
