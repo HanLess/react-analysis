@@ -26,6 +26,44 @@ while (当前还有空闲时间 && 下一个节点不为空) {
 }
 ```
 
+源码
+
+```
+function workLoop(isYieldy) {
+  if (!isYieldy) {
+    // Flush work without yielding
+    while (nextUnitOfWork !== null) {
+      /**
+       * 这里执行深度优先遍历，从 #root 向下循环，直到每一个元素都被遍历到
+       * 
+       */
+      nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    }
+  } else {
+    // Flush asynchronous work until there's a higher priority event
+    /**
+     * 在 concurrent 模式下，一个任务在这里被分片，fiber 树会按片遍历，每次遍历一部分
+     * 
+     * 判断继续执行本任务的条件：当前还有空闲时间 && 下一个节点不为空
+     * 
+     * shouldYield() 为 true 的时候，一个分片任务结束
+     * 
+     * shouldYield()的关键点是：这个分片任务的截止执行时间
+     */
+    while (nextUnitOfWork !== null && !shouldYield()) {
+      nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    }
+  }
+}
+```
+
+react 的任务在 workLoop 中被分片，分片的依据就是 shouldYield()，而 shouldYield 中主要的判断条件是 frameDeadline，可以把 frameDeadline 理解为一个分片任务的截止时间，通过计算得到
+
+#### 所以总结如下
+
+当一个分片任务的截止时间到了，此分片任务结束，执行下一个分片任务（执行周期是 requestAnimationFrame），所有分片任务执行结束，render 阶段完成
+
+
 ### 时间片间如何中断与恢复(跳过低优先级，高优先级执行后重新执行低优先级)
 
 Fiber 节点在变更后会形成 update 对象，带有 expirationTime，插入 updateQueue 中，updateQueue 中所有 update 对象均按照变更（插入）顺序排列，若高优先级 update 与低优先级 update 同处一个队列，对于低优先级的 update 会采用 <strong>跳过</strong> 方式处理，来保证 Sync 模式与 Concurrent 模式下，最终变更结果是一致的，如下图所示：
