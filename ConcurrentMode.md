@@ -59,7 +59,7 @@ function workLoop(isYieldy) {
 
 react 的任务在 workLoop 中被分片，分片的依据就是 shouldYield()，而 shouldYield 中主要的判断条件是 frameDeadline，可以把 frameDeadline 理解为一个分片任务的截止时间，通过计算得到
 
-所以总结如下：
+#### 所以总结如下
 
 当一个分片任务的截止时间到了，此分片任务结束，执行下一个分片任务（执行周期是 requestAnimationFrame），所有分片任务执行结束，render 阶段完成
 
