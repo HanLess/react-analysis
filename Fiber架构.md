@@ -47,7 +47,9 @@
 
 - 第一部分从 ReactDOM.render() 方法开始，到 enqueueUpdate 为止，把接收的 React Element 转换为 Fiber 节点，并为其设置优先级，创建 Update，加入到更新队列，这部分主要是做一些初始数据的准备。我把这个阶段称为 schedule 阶段。
 
-- 第二部分
+- 第二部分从 scheduleWork 开始，到 renderRoot 截止，这里把整个 fiber 树创建完成（在 workLoop 中实现任务分片），并构造 WorkInProgress Tree 得出 Change。创建 WorkInProgress Tree 的过程也是一个 Diff 的过程，Diff 完成之后会生成一个 Effect List，这个 Effect List 就是最终 Commit 阶段用来处理副作用的阶段。我把这个阶段称为 render 阶段
+
+- 第三部分从 completeRoot 开始，到最后 dom 更新。称为 commit 阶段。
 
 
 
