@@ -43,9 +43,12 @@
 
 - 根据 EffectList 更新 DOM。
 
-总结流程图如下：
+总结流程如下：
 
-<img src="https://github.com/HanLess/react-analysis/blob/master/img/react%E6%B5%81%E7%A8%8B%2Cpng.png" />
+- 第一部分从 ReactDOM.render() 方法开始，到 enqueueUpdate 为止，把接收的 React Element 转换为 Fiber 节点，并为其设置优先级，创建 Update，加入到更新队列，这部分主要是做一些初始数据的准备。我把这个阶段称为 schedule 阶段。
+
+- 第二部分
+
 
 
 
