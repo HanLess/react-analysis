@@ -54,7 +54,7 @@
 
 ## diff 阶段
 
- diff 算法是从 reconcileChildren 开始的，react 16 后的 diff 算法与之前不同，太复杂不想看
+ diff 算法是从 reconcileChildren 开始的，react 16 后的 diff 算法与之前不同，老的 diff 与 vue 一样，新 diff 太复杂不想看
  
  
 
