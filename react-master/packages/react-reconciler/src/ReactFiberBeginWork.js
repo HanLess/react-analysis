@@ -872,7 +872,7 @@ function pushHostRootContext(workInProgress) {
  * 
  * 最后返回 workInProgress.child ，一个 fiber 对象（App 的 react element，即虚拟 dom 的 fiber 对象）
  * 
- * 在这个阶段可以发现，root 的 fiber 对象，child 属性对应 App 的 fiber 对象
+ * 在这个阶段可以发现，root 的 fiber 对象，child 属性对应 <App> 的 fiber 对象
  */
 function updateHostRoot(current, workInProgress, renderExpirationTime) {
   /**
