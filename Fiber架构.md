@@ -43,7 +43,9 @@
 
 - 根据 EffectList 更新 DOM。
 
+总结流程图如下：
 
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/react%E6%B5%81%E7%A8%8B%2Cpng.png" />
 
 
 
