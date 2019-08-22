@@ -68,7 +68,7 @@ react 的任务在 workLoop 中被分片，分片的依据就是 shouldYield()�
 
 Fiber 节点在变更后会形成 update 对象，带有 expirationTime，插入 updateQueue 中，updateQueue 中所有 update 对象均按照变更（插入）顺序排列，若高优先级 update 与低优先级 update 同处一个队列，对于低优先级的 update 会采用 <strong>跳过</strong> 方式处理，来保证 Sync 模式与 Concurrent 模式下，最终变更结果是一致的，如下图所示：
 
-<img src="" />
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/%E8%B7%B3%E8%BF%87%E4%BD%8E%E4%BC%98%E5%85%88%E7%BA%A7%E4%BB%BB%E5%8A%A1.jpg" />
 
 当我们优先完成高优先级任务后，还能继续低优先级任务么？不行，高优先级任务的变更可能对低优先级任务产生影响，低优先级任务必须重新来过，之前收集的 effectList 会被重置为 null，updateQueue 会从 current tree 中恢复回来。之前社区曾广泛 讨论，未来 React 中 componentWillMount 可能被调用多次，原因就在这里，低优先级任务的 render 阶段可能被重复执行，而 componentWillMount 包含在 render 阶段中。
 
