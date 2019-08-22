@@ -4,6 +4,24 @@
 
 <a href="https://juejin.im/post/5c052f95e51d4523d51c8300#heading-0">「译」React Fiber 那些事: 深入解析新的协调算法</a>
 
+#### 浏览器内一帧的工作
+
+<img src="" />
+
+<ul>
+  <li>处理用户的交互</li>
+
+  <li>JS 解析执行</li>
+
+  <li>帧开始。窗口尺寸变更，页面滚去等的处理</li>
+
+  <li>rAF(requestAnimationFrame)</li>
+
+  <li>布局</li>
+
+  <li>绘制</li>
+</ul>  
+
 #### ExpirationTime
 
 ExpirationTime 代表了渲染任务的优先级，react会根据优先级来执行、插入渲染任务，这么做的优势：
