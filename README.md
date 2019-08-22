@@ -6,7 +6,7 @@
 
 #### 浏览器内一帧的工作
 
-<img src="" />
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/%E4%B8%80%E5%B8%A7.png" />
 
 <ul>
   <li>处理用户的交互</li>
