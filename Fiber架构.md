@@ -51,6 +51,7 @@
 
 - 第三部分从 completeRoot 开始，到最后 dom 更新。称为 commit 阶段。
 
+<img src="https://github.com/HanLess/react-analysis/blob/master/img/%E6%B5%81%E7%A8%8B%E7%AE%80%E5%8C%96.png" />
 
 ## diff 阶段
 
