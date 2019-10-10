@@ -2,7 +2,7 @@
 
 如果DOM上绑定了过多的事件处理函数，整个页面响应以及内存占用可能都会受到影响。React为了避免这类DOM事件滥用，同时屏蔽底层不同浏览器之间的事件系统差异，实现了一个中间层——SyntheticEvent。
 
-1、当用户在为onClick添加函数时，React并没有将Click时间绑定在DOM上面。
+1、当用户在为onClick添加函数时，React并没有将Click事件绑定在DOM上面。
 
 2、而是在document处监听所有支持的事件，当事件发生并冒泡至document处时，React将事件内容封装交给中间层SyntheticEvent（负责所有事件合成）
 
