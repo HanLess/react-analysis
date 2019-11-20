@@ -62,3 +62,7 @@ redux 中没有显示地定义 state，个人认为不好，可能会导致数�
 #### vuex
 
 vuex 中会维护一个全局 store 对象，对象中存了所有内容，包括 state，mutation，action 等；修改也是直接修改 state 属性
+
+vuex 并不是严格的数据单向流动，直接更改 state 也是可以生效的，且可以正常使用，所谓的单向数据流动全靠自觉
+
+
