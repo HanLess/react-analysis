@@ -508,6 +508,10 @@ function legacyCreateRootFromDOMContainer(
   /**
    * 这个 if 中，先清空 container 中的子节点
    * 循环处理，每次循环删掉最后一个子节点，即 lastChild
+   * 
+   * ReactDOM.render 将走这个 if 逻辑
+   * 
+   * ReactDOM.hydrate 不会走
    */
   if (!shouldHydrate) {
     let warned = false;
