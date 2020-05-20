@@ -39,9 +39,11 @@ react 和 vue 都有 “就地复用” 的概念，且只有在循环列表时�
 
 在循环列表时，即使顺序打乱，也不会重新创建组件列表（列表中的每个节点都是相同类型的，也从另一方变迎合了 component diff，但与 component diff 有很大不同），而是使用老的节点，且老节点的 state/data 被沿用
 
-那什么时候有变化 —— 当 props 发生变化的时候，就会触发子组件的更新，否则不会；当就地复用的时候，组件内部的 state / data 也会被复用。
+即使传入子组件的 prop 发生变化，子组件触发了 update 生命周期，state/data 仍然不发生变化！！！！
 
-这就产生了这个经典的 bug
+这就产生了这个经典的系列 bug
+
+#### 删除中间的子组件
 
 ```
 <template>
@@ -83,6 +85,113 @@ react 和 vue 都有 “就地复用” 的概念，且只有在循环列表时�
 删掉节点二，对于 vue/react 来说，其实是删掉了最后一个节点（节点三），因为 vue 不知道节点的顺序，只知道节点少了一个，当遍历到第二个节点时，发现：
 
 节点类型相同，且没有发生更新（props 没有更新，data 也没有更新），则就地复用之前的第二个节点，则 data 没有变化，还展示了第二个节点内容。实际就删除节点三
+
+#### 插入一个新的子组件  &  改变子组件的顺序（修改传入的 props）
+
+```
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import One from './components/One'
+
+
+class Kid extends Component<any,any> {
+
+  constructor(props:any){
+    super(props)
+
+    this.state = {
+      value: this.props.val
+    }
+  }
+  changeValue = (e:any) => {
+    this.setState({
+      value: e.target.value
+    })
+  }
+
+  componentDidUpdate(){
+    console.log('kid update' ,this.props.val, this.state.value)
+  }
+
+  render(){
+    return (
+      <div>
+          {this.props.val}
+          <input type="text" value={this.state.value} onChange={(e) => {this.changeValue(e)}} />
+          {this.state.value}
+      </div>
+      
+    )
+  }
+  
+}
+
+
+class App extends Component<any,any> {
+
+  constructor(props:any){
+    super(props)
+    this.state = {
+      list: [1,2,3]
+    }
+  }
+
+  delete = () => {
+    let list = this.state.list
+    list.splice(1,1)
+    this.setState({
+      list
+    })
+  }
+
+  exchange = () => {
+    let list = this.state.list;
+    let first = list[0]
+    let third = list[2]
+    list[0] = third
+    list[2] = first
+    this.setState({
+      list
+    })
+  }
+
+  insert = () => {
+    let list = this.state.list
+    list.splice(1,0,4)
+
+    this.setState({
+      list
+    })
+  }
+
+  componentDidUpdate(){
+    console.log('update')
+  }
+
+  render(){
+    return (
+      <>
+        <div onClick={this.delete}>delete</div>
+        <div onClick={this.exchange}>exchange</div>
+        <div onClick={this.insert}>insert</div>
+        {
+          this.state.list.map((val:any,index:number) => {
+            return (
+              <Kid val={val} />
+            )
+          })
+        }
+      </>
+    )
+  }
+}
+
+export default App;
+
+```
+
+现象：在中间插入新的组件，会发现新的组件是被 push 进去的，排在最后面，而交换组件顺序（修改传入的 props）会发现子组件根本没有变化（当然传入的 prop 有变化，但 state/data 这些组件状态没有变）
 
 #### 有 key 无 key 对性能的影响
 
