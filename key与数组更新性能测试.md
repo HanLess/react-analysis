@@ -201,4 +201,52 @@ export default App;
 
 ## 源码中的 key 是怎样工作的，为什么会对性能，对列表渲染产生影响
 
+进入 beginWork 后，react 会把数组当做 Fragment 类型处理
+
+```
+
+reconcileChildren -> reconcileChildFibers(主要逻辑)
+
+```
+
+reconcileChildFibers 中包括了 econcileChildrenArray ，reconcileChildrenIterator，reconcileSingleTextNode，reconcileSingleElement，reconcileSinglePortal 五种主要的方法来 diff 不同类型的 react 节点，其中 econcileChildrenArray ，reconcileChildrenIterator 用来处理数组
+
+```
+reconcileChildrenIterator -> updateSlot
+```
+
+updateSlot 中，会对旧的数组的第一个子元素和新数组的第一个子元素传入进行对比。
+
+```
+const key = oldFiber !== null ? oldFiber.key : null;
+
+...
+
+if (newChild.key === key) {
+  if (newChild.type === REACT_FRAGMENT_TYPE) {
+    return updateFragment(
+      returnFiber,
+      oldFiber,
+      newChild.props.children,
+      expirationTime,
+      key,
+    );
+  }
+  return updateElement(
+    returnFiber,
+    oldFiber,
+    newChild,
+    expirationTime,
+  );
+} else {
+  return null;
+}
+```
+
+接下来会通过 mapRemainingChildren 把数组中的每一项收集到 existingChildren（Map 类型的实例） 中，key 是每一项的 key，value 是这个节点，如果没有显式的设置 key 值，react 会自动用 index 当做 key
+
+
+收集 existingChildren 后，会循环执行 updateFromMap ，React会根据旧数据中当前循环的item和新数据的item进行对比，最终决定如何更新。
+
+
 
