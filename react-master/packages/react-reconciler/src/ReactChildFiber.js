@@ -378,8 +378,10 @@ function ChildReconciler(shouldTrackSideEffects) {
     element: ReactElement,
     expirationTime: ExpirationTime,
   ): Fiber {
+    // 判断新旧数据的 元素类型 是否一致
     if (current !== null && current.elementType === element.type) {
       // Move based on index
+      // 一致，则就地复用，只是更新了 props ！！！！！！，所以没有 key 的时候，就地复用会导致一系列的经典 bug
       const existing = useFiber(current, element.props, expirationTime);
       existing.ref = coerceRef(returnFiber, current, element);
       existing.return = returnFiber;
@@ -389,6 +391,7 @@ function ChildReconciler(shouldTrackSideEffects) {
       }
       return existing;
     } else {
+      // 不一致则插入新的节点
       // Insert
       const created = createFiberFromElement(
         element,
@@ -546,6 +549,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     if (typeof newChild === 'object' && newChild !== null) {
       switch (newChild.$$typeof) {
         case REACT_ELEMENT_TYPE: {
+          // key是否相同
           if (newChild.key === key) {
             if (newChild.type === REACT_FRAGMENT_TYPE) {
               return updateFragment(
@@ -556,6 +560,7 @@ function ChildReconciler(shouldTrackSideEffects) {
                 key,
               );
             }
+            // 更新组件
             return updateElement(
               returnFiber,
               oldFiber,
@@ -730,7 +735,6 @@ function ChildReconciler(shouldTrackSideEffects) {
     return knownKeys;
   }
 
-  // diff 算法
   function reconcileChildrenArray(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,
@@ -890,6 +894,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     return resultingFirstChild;
   }
 
+  // 处理数组
   function reconcileChildrenIterator(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,
@@ -1221,6 +1226,8 @@ function ChildReconciler(shouldTrackSideEffects) {
   // This API will tag the children with the side-effect of the reconciliation
   // itself. They will be added to the side-effect list as we pass through the
   // children and the parent.
+
+  // 给 fiber 树生成副作用标记
   function reconcileChildFibers(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,

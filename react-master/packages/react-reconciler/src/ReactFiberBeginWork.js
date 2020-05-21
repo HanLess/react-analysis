@@ -2006,6 +2006,11 @@ function bailoutOnAlreadyFinishedWork(
  * 
  * 执行生命周期方法（render 之前，包括 render）
  * 
+ * 
+ * 如果节点是个数组（pendingProps , memoizedProps 是数组），
+ * workInProgress.tag == 7，当成 Fragment 处理
+ * 
+ * 
  */
 function beginWork(
   current: Fiber | null,
