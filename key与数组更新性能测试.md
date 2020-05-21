@@ -246,7 +246,41 @@ if (newChild.key === key) {
 接下来会通过 mapRemainingChildren 把数组中的每一项收集到 existingChildren（Map 类型的实例） 中，key 是每一项的 key，value 是这个节点，如果没有显式的设置 key 值，react 会自动用 index 当做 key
 
 
-收集 existingChildren 后，会循环执行 updateFromMap ，React会根据旧数据中当前循环的item和新数据的item进行对比，最终决定如何更新。
+收集 existingChildren 后，会循环执行 updateFromMap ，React会根据旧数据中当前循环的item和新数据的item进行对比，最终决定如何更新。主要逻辑在 updateElement 中
+
+```
+function updateElement(
+    returnFiber: Fiber,
+    current: Fiber | null,
+    element: ReactElement,
+    expirationTime: ExpirationTime,
+  ): Fiber {
+  // 判断新旧数据的 元素类型 是否一致
+    if (current !== null && current.elementType === element.type) {
+      // Move based on index
+      // 一致，则就地复用，只是更新了 props ！！！！！！，所以没有 key 的时候，就地复用会导致上面的经典 bug
+      const existing = useFiber(current, element.props, expirationTime);
+      existing.ref = coerceRef(returnFiber, current, element);
+      existing.return = returnFiber;
+      if (__DEV__) {
+        existing._debugSource = element._source;
+        existing._debugOwner = element._owner;
+      }
+      return existing;
+    } else {
+    // 不一致则插入新的节点
+      // Insert
+      const created = createFiberFromElement(
+        element,
+        returnFiber.mode,
+        expirationTime,
+      );
+      created.ref = coerceRef(returnFiber, current, element);
+      created.return = returnFiber;
+      return created;
+    }
+  }
+```
 
 
 
