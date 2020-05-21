@@ -222,6 +222,7 @@ const key = oldFiber !== null ? oldFiber.key : null;
 
 ...
 
+// key 是否相同
 if (newChild.key === key) {
   if (newChild.type === REACT_FRAGMENT_TYPE) {
     return updateFragment(
@@ -232,6 +233,7 @@ if (newChild.key === key) {
       key,
     );
   }
+  // 更新组件
   return updateElement(
     returnFiber,
     oldFiber,
