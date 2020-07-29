@@ -143,6 +143,8 @@ if (
   // will adjust this value to a faster fps if we get more frequent animation
   // frames.
   let previousFrameTime = 33;
+  
+  // 一个分片任务的执行时间是 33 ms
   let activeFrameTime = 33;
 
 
