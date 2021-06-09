@@ -4,7 +4,7 @@
 
 (1) mobx 监听的原理是 proxy，当属性改变，触发 setter 监听器
 
-(2) 在监听器中主动触发 react 中的 setState，实现组件重新渲染
+(2) 在监听器中主动触发 react 中的 forceUpdate，实现组件重新渲染
 
 (3) 有两种情况 react 不走合成事件流：异步、原生事件
 
