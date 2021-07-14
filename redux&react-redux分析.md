@@ -1,3 +1,19 @@
+#### 数据更新原理
+
+react-redux的核心机制是通知订阅模式，核心 Subscription 类，它的作用主要是 订阅父级 的更新和 通知子 级的更新，起到一个承上启下的作用，具体如下：
+
+```
+<Provider store={store}>          // 祖 Subscription
+  <Component1> // 它订阅的Provider    // 父 Subscription
+  	<Component2/> // 它订阅的Component1   // 子 Subscription
+  <Component1/>
+</Provider>
+// 当store有更新，Provider 通知 Component1，Component1 通知 Component2
+```
+
+通知到订阅相关属性的组件后，forceUpdate
+
+
 <img src="https://github.com/HanLess/react-analysis/blob/master/img/redux%26react-redux.png" />
 
 ## reducer
