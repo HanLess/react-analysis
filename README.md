@@ -4,6 +4,7 @@
 
 <a href="https://juejin.im/post/5c052f95e51d4523d51c8300#heading-0">「译」React Fiber 那些事: 深入解析新的协调算法</a>
 
+<a href="https://xiaochen1024.com/courseware/60b1b2f6cf10a4003b634718/60b1b354cf10a4003b634721">react源码解析</a>
 
 #### concurrent
 
